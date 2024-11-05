@@ -1,0 +1,6 @@
+# Ensure all text files have consistent line endings
+* text=auto
+*.sh text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+
