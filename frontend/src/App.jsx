@@ -2,18 +2,20 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import CollegeList from './user/Colleges/Colleges';
 import Home from './user/Home/Home';
 import Header from './user/Header/Header';
-import CollegeInfo from './user/Colleges/Collegeinfo';
 import Contact from './user/Contact/Contact';
 import AdminLogin from './Admin/AdminLogin';
 import ProtectedRoute from './Admin/ProjectRoute';
 import Dashboard from './Admin/Dashboard';
 import Layout from './Admin/Common/Layout';
-import EditCollege from './Admin/EditCollege';
-import { AddColleges } from './Admin/Addcolleges';
-
-
-
-
+import EditCollege from './Admin/Edit/EditCollege';
+import { AddColleges } from './Admin/Add/Addcolleges';
+import CollegeDetails from './user/Colleges/Collegedetial';
+import { AddUniversity } from './Admin/Add/Adduniversity';
+import AddCourse from './Admin/Add/Addcourse';
+import CourseList from './Admin/Edit/Editcourses';
+import CollegesPage from './Admin/Allcourses';
+import CoursesPage from './Admin/Edit/Editcourses';
+import AddFacility from './Admin/Add/Addfacilities';
 
 // Layout component to apply the Header for specific routes
 const LayoutWithHeader = () => (
@@ -32,7 +34,7 @@ function App() {
           <Route element={<LayoutWithHeader />}>
             <Route path="/" element={<Home />} />
             <Route path="/colleges" element={<CollegeList />} />
-            <Route path="/colleges/:id" element={<CollegeInfo />} />
+            <Route path="/colleges/:id" element={<CollegeDetails />} />
             <Route path="/contact" element={<Contact />} />
           </Route>
 
@@ -44,6 +46,12 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/edit/:id" element={<EditCollege/>} />
           <Route path="/addcollege" element={<AddColleges/>} />
+          <Route path="/addcourse" element={<AddCourse/>} />
+          <Route path="/addfacility" element={<AddFacility/>} />
+          <Route path="/allcourse" element={<CollegesPage/>} />
+          <Route path="/courses/:collegeId" element={<CoursesPage/>}/>
+          <Route path="/adduniversity" element={<AddUniversity/>} />
+
           </Route>
         </Route>
         </Routes>

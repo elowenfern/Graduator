@@ -22,12 +22,31 @@ import {
       path: '/addcollege',
       icon: <HiOutlineViewGrid />
     },
-    // {
-    //   key: 'orders',
-    //   label: 'Orders',
-    //   path: '/orders',
-    //   icon: <HiOutlineShoppingCart />
-    // },
+    {
+      key: 'Add Courses',
+      label: 'Add Courses',
+      path: '/addcourse',
+      icon: <HiOutlineViewGrid />
+    },
+    {
+      key: 'Add University',
+      label: 'Add University',
+      path: '/adduniversity',
+      icon: <HiOutlineViewGrid />
+    },
+    
+    {
+      key: 'All Course',
+      label: 'All Course',
+      path: '/allcourse',
+      icon: <HiOutlineViewGrid />
+    },
+    {
+      key: 'Add Facility',
+      label: 'Add facility',
+      path: '/addfacility',
+      icon: <HiOutlineViewGrid />
+    },
     // {
     //   key: 'customers',
     //   label: 'Customers',
