@@ -199,14 +199,7 @@ const EditCollege = () => {
           />
         </div>
          
-        <FacilitySelection
-          facilities={facilities}
-          selectedFacilities={selectedFacilities}
-          setSelectedFacilities={setSelectedFacilities}
-        />
-
-
-
+       
 
         {/* University Dropdown */}
         <div className="mb-4">

@@ -41,12 +41,12 @@ import {
       path: '/allcourse',
       icon: <HiOutlineViewGrid />
     },
-    {
-      key: 'Add Facility',
-      label: 'Add facility',
-      path: '/addfacility',
-      icon: <HiOutlineViewGrid />
-    },
+    // {
+    //   key: 'Add Facility',
+    //   label: 'Add facility',
+    //   path: '/addfacility',
+    //   icon: <HiOutlineViewGrid />
+    // },
     // {
     //   key: 'customers',
     //   label: 'Customers',

@@ -9,6 +9,8 @@ const AddCourse = () => {
     name: '',
     description: '',
     fees: '',
+    semester: '', // Added semester field
+    years: '', // Added years field
   });
   const token = 'YOUR_TOKEN_HERE'; // Replace with your token
   const navigate = useNavigate();
@@ -57,7 +59,7 @@ const AddCourse = () => {
         },
       });
       console.log('Course added:', response.data);
-      navigate('/dashboard'); // Redirect after success
+      navigate('/allcourse'); // Redirect after success
     } catch (error) {
       console.error('Error adding course:', error);
     }
@@ -134,6 +136,40 @@ const AddCourse = () => {
             value={courseData.fees}
             onChange={handleInputChange}
             placeholder="Course Fees"
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        {/* Course Semester */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="semester">
+            Semester
+          </label>
+          <input
+            type="number"
+            id="semester"
+            name="semester"
+            value={courseData.semester}
+            onChange={handleInputChange}
+            placeholder="Number of Semesters"
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        {/* Course Years */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="years">
+            Years
+          </label>
+          <input
+            type="number"
+            id="years"
+            name="years"
+            value={courseData.years}
+            onChange={handleInputChange}
+            placeholder="Number of Years"
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />

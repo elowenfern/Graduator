@@ -48,10 +48,12 @@ const CoursesPage = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { name, fee } = e.target;
+      const { name, fee, semester, years } = e.target;
       await axios.put(`http://localhost:8000/api/courses/${selectedCourse.id}/`, {
         name: name.value,
         fee: fee.value,
+        semester: semester.value, // Send the semester field
+        years: years.value, // Send the years field
       }, {
         headers: {
           'Authorization': `Token ${token}`,
@@ -86,6 +88,8 @@ const CoursesPage = () => {
             <th className="py-2 px-4 border-b">ID</th>
             <th className="py-2 px-4 border-b">Course Name</th>
             <th className="py-2 px-4 border-b">Fee</th>
+            <th className="py-2 px-4 border-b">Semester</th> {/* New column for semester */}
+            <th className="py-2 px-4 border-b">Years</th> {/* New column for years */}
             <th className="py-2 px-4 border-b">Action</th>
           </tr>
         </thead>
@@ -96,6 +100,8 @@ const CoursesPage = () => {
                 <td className="py-2 px-4 border-b">{course.id}</td>
                 <td className="py-2 px-4 border-b">{course.name}</td>
                 <td className="py-2 px-4 border-b">{course.fees}</td>
+                <td className="py-2 px-4 border-b">{course.semester}</td> {/* Display semester */}
+                <td className="py-2 px-4 border-b">{course.years}</td> {/* Display years */}
                 <td className="py-2 px-4 border-b">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
@@ -117,7 +123,7 @@ const CoursesPage = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="py-2 px-4 text-center">No courses found</td>
+              <td colSpan="6" className="py-2 px-4 text-center">No courses found</td> {/* Adjust for the extra columns */}
             </tr>
           )}
         </tbody>
@@ -147,6 +153,28 @@ const CoursesPage = () => {
                   name="fee"
                   type="number"
                   defaultValue={selectedCourse.fees}
+                  className="mt-1 p-2 w-full border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="semester">Semester</label>
+                <input
+                  id="semester"
+                  name="semester"
+                  type="number"
+                  defaultValue={selectedCourse.semester}
+                  className="mt-1 p-2 w-full border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="years">Years</label>
+                <input
+                  id="years"
+                  name="years"
+                  type="number"
+                  defaultValue={selectedCourse.years}
                   className="mt-1 p-2 w-full border rounded"
                   required
                 />

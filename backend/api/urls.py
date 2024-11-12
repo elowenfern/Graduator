@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+
 from .views import (
     CollegeDetail, 
     CollegeCreateView, 
@@ -9,7 +10,8 @@ from .views import (
     UniversityViewSet,
     FacilityViewSet,
     CollegeList,
-    LoginView
+    LoginView,
+    send_whatsapp,
 )
 
 
@@ -23,6 +25,7 @@ router.register(r'facilities', FacilityViewSet)
 
 
 urlpatterns = [
+    path('send-whatsapp/', send_whatsapp, name='send_whatsapp'), 
     path('colleges/', CollegeList.as_view(), name='college-list'),
     path('editcolleges/<int:pk>/', CollegeDetail.as_view(), name='college-detail'),
     path('', include(router.urls)),

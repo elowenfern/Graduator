@@ -48,14 +48,14 @@ export const AddColleges = () => {
     setImages(files);
   };
 
-  const handleFacilityChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedFacilities((prevSelectedFacilities) =>
-      checked
-        ? [...prevSelectedFacilities, value]
-        : prevSelectedFacilities.filter((facility) => facility !== value)
-    );
-  };
+  // const handleFacilityChange = (e) => {
+  //   const { value, checked } = e.target;
+  //   setSelectedFacilities((prevSelectedFacilities) =>
+  //     checked
+  //       ? [...prevSelectedFacilities, value]
+  //       : prevSelectedFacilities.filter((facility) => facility !== value)
+  //   );
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -175,26 +175,7 @@ export const AddColleges = () => {
             </select>
           </div>
 
-          {/* Checkboxes for selecting facilities */}
-          {/* <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Select Facilities</label>
-            <div className="space-y-2">
-              {facilities.map((facility) => (
-                <div key={facility.id} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id={`facility-${facility.id}`}
-                    value={facility.id}
-                    onChange={handleFacilityChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`facility-${facility.id}`} className="text-sm text-gray-700">
-                    {facility.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div> */}
+          
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700" htmlFor="images">

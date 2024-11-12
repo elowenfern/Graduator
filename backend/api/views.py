@@ -15,6 +15,78 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+
+
+
+
+
+
+
+
+
+# Twilio credentials (replace these with your actual credentials)
+
+
+client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+twilio_number = settings.TWILIO_PHONE_NUMBER
+admin_phone = settings.ADMIN_PHONE
+
+
+
+@csrf_exempt
+def send_whatsapp(request):
+    if request.method == "POST":
+        try:
+            # Get data from the request body
+            data = json.loads(request.body.decode('utf-8'))
+            name = data.get('name')
+            email = data.get('email')
+            phone = data.get('phone')
+            message=data.get('message')
+            course = data.get('course')
+            college = data.get('college')
+
+            # Construct the message
+            message_body = f"""
+            New inquiry received:
+            Name: {name}
+            Email: {email}
+            Phone: {phone}
+            Message={message}
+            Interested Course: {course}
+            College: {college}
+            """
+
+            # Send the WhatsApp message to the admin
+            message = client.messages.create(
+                body=message_body,
+                from_=twilio_number,
+                to=admin_phone
+            )
+
+            return JsonResponse({"message": "Message sent successfully!", "sid": message.sid}, status=200)
+        except TwilioRestException as e:
+            # Log Twilio-specific errors
+            logger.error(f"Twilio API error: {str(e)}")
+            return JsonResponse({"error": f"Twilio error: {str(e)}"}, status=500)
+        except Exception as e:
+            # Log unexpected errors
+            logger.error(f"Unexpected error: {str(e)}")
+            return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
+    else:
+        return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
 
 
 
@@ -78,17 +150,17 @@ class CollegeDetail(generics.RetrieveUpdateDestroyAPIView):
             raise ValidationError({'existing_images': 'Invalid format'})
         
 
-        facilities_data = self.request.data.getlist('facilities')
-        print(f"Facilities Data: {facilities_data}")
-        try:
-            facilities_ids =facilities_data
-            if isinstance(facilities_ids, list) and all(facility_id.isdigit() for facility_id in facilities_data):  # Ensure it's a list
-                facilities_instances = Facility.objects.filter(id__in=facilities_ids)
-                college.facilities.set(facilities_instances)
-            else:
-                raise ValidationError({'facilities': 'Invalid format, expected a list of IDs'})
-        except (json.JSONDecodeError, ValueError):
-            raise ValidationError({'facilities': 'Invalid format'})
+        # facilities_data = self.request.data.getlist('facilities')
+        # print(f"Facilities Data: {facilities_data}")
+        # try:
+        #     facilities_ids =facilities_data
+        #     if isinstance(facilities_ids, list) and all(facility_id.isdigit() for facility_id in facilities_data):  # Ensure it's a list
+        #         facilities_instances = Facility.objects.filter(id__in=facilities_ids)
+        #         college.facilities.set(facilities_instances)
+        #     else:
+        #         raise ValidationError({'facilities': 'Invalid format, expected a list of IDs'})
+        # except (json.JSONDecodeError, ValueError):
+        #     raise ValidationError({'facilities': 'Invalid format'})
 
 
 
@@ -140,6 +212,12 @@ class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
 
+
+    def get_queryset(self):
+        return College.objects.all()
+    def perform_update(self, serializer):
+        # Custom update method for handling facilities
+        serializer.save()
 
 
 

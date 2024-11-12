@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import CollegeFacilities from './CollegeFacility';
-// Import Font Awesome for location icon (if using Font Awesome)
-import { FaMapMarkerAlt } from 'react-icons/fa'; 
+import { useParams } from 'react-router-dom';
+import { Courses,Fees,Photos,Description } from './Courses';
+import Book from  '../Contact/Book';
 
 const CollegeDetails = () => {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   useEffect(() => {
     const fetchCollegeDetails = async () => {
@@ -30,35 +30,56 @@ const CollegeDetails = () => {
     fetchCollegeDetails();
   }, [id]);
 
+  // Modal open/close functionality
+  const openModal = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeModal = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % college.images.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex(
+      (prevIndex) => (prevIndex - 1 + college.images.length) % college.images.length
+    );
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-800">{college.name}</h1>
-        <p className="mt-2 text-gray-600">{college.description}</p>
-      </div>
+    <div className="container mx-auto p-4">
+      <nav className="flex justify-center space-x-8 text-gray-700 font-bold">
+        <a href="#photos" className="hover:underline">Photos</a>
+        <a href="#description" className="hover:underline">Description</a>
+        <a href="#fees" className="hover:underline">Fees</a>
+        <a href="#courses" className="hover:underline">Courses</a>
+        <a href="#book" className="hover:underline">Book Admission</a>
+      </nav>
 
-      <div className="max-w-4xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-800">SITUATED AT</h2>
-        <p className="mt-4 text-gray-600">{college.location}</p>
-        
-        {/* Location Icon with link to Google Maps */}
-        <a
-          href={`https://www.google.com/maps/dir/?api=1&destination=${college.latitude},${college.longitude}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center text-blue-500 underline mt-4"
-        >
-          {/* Location Icon (Font Awesome) */}
-          <FaMapMarkerAlt className="mr-2 text-xl" />
-          LOCATION
-        </a>
-      </div>
-      <CollegeFacilities collegeId={college.id} />
+
+      <Photos 
+        college={college} 
+        openModal={openModal} 
+        closeModal={closeModal} 
+        selectedImageIndex={selectedImageIndex} 
+        nextImage={nextImage} 
+        prevImage={prevImage} 
+      />
+      <Description college={college} />
+      <Fees college={college} />
+      <Courses college={college} />
+      <Book/>
+      
+           
     </div>
   );
 };
 
 export default CollegeDetails;
+
