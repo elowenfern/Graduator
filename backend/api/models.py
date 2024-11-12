@@ -38,15 +38,34 @@ class Facility(models.Model):
         return self.name 
     
 class Course(models.Model):
+    CATEGORY_CHOICES = [
+        ('science', 'Science'),
+        ('arts', 'Arts'),
+        ('commerce', 'Commerce'),
+        ('engineering', 'Engineering'),
+        ('management','Management'),
+        ('medical','Medical'),
+        ('Pharmacy','pharmacy'),
+        ('law','Law'),
+        ('agriculture','Agriculture'),
+        ('paramedical','Paramedical'),
+        ('design','Design'),
+        ('allied health science','Allied Health Science'),
+        ('veterinary','Veterinary'),
+    ]
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     fees = models.DecimalField(max_digits=10, decimal_places=2)
     semester = models.IntegerField(default=0)  # Number of semesters
     years = models.IntegerField(default=0) 
     college = models.ForeignKey(College, related_name='courses', on_delete=models.CASCADE)
-
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='science')  # Set default to 'science'
+    
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['name'] 
     
 
 

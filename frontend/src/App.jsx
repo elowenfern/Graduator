@@ -16,6 +16,10 @@ import CourseList from './Admin/Edit/Editcourses';
 import CollegesPage from './Admin/Allcourses';
 import CoursesPage from './Admin/Edit/Editcourses';
 import AddFacility from './Admin/Add/Addfacilities';
+import FilteredCoursename from './user/Filter/Filtercoursename';
+import Filteredloc from './user/Filter/Filteredlocation';
+
+
 
 // Layout component to apply the Header for specific routes
 const LayoutWithHeader = () => (
@@ -33,8 +37,11 @@ function App() {
           {/* Routes with Header */}
           <Route element={<LayoutWithHeader />}>
             <Route path="/" element={<Home />} />
+            
             <Route path="/colleges" element={<CollegeList />} />
             <Route path="/colleges/:id" element={<CollegeDetails />} />
+            <Route path="/colleges/:category/:course" element={<FilteredCoursename />} />
+            <Route path="/colleges/location/:location" element={<Filteredloc />} />
             <Route path="/contact" element={<Contact />} />
           </Route>
 

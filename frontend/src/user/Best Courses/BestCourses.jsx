@@ -1,90 +1,46 @@
 import React from 'react';
-import BscAnasth from '../../Asset/Bestcourses/BscAnasth.jpeg'
-import Bscmed from '../../Asset/Bestcourses/Bscmed.jpeg'
-import BscMicrobiology from '../../Asset/Bestcourses/BscMicrobiology.jpeg'
-import MscAnaesth from '../../Asset/Bestcourses/MscAnaesth.jpeg'
-import MscEcho from '../../Asset/Bestcourses/MscEcho.jpeg'
+import { useNavigate } from 'react-router-dom';
+import BscAnasth from '../../Asset/Bestcourses/BscAnasth.jpeg';
+import Bscmed from '../../Asset/Bestcourses/Bscmed.jpeg';
+import BscMicrobiology from '../../Asset/Bestcourses/BscMicrobiology.jpeg';
+import MscAnaesth from '../../Asset/Bestcourses/MscAnaesth.jpeg';
+import MscEcho from '../../Asset/Bestcourses/MscEcho.jpeg';
 
 const BestCourses = () => {
+  const navigate = useNavigate();
+
   const courses = [
     {
       name: 'B.Sc Medical Laboratory Tech',
       description: 'B.Sc in Medical Laboratory Technology',
       views: 843,
-      category: 'Paramedical',
+      category: 'paramedical',
       image: Bscmed,
     },
     {
       name: 'M.Sc Anaesthesia and Operation',
       description: 'M.Sc Anaesthesia and Operation Theatre',
       views: 725,
-      category: 'Paramedical',
+      category: 'paramedical',
       image: MscAnaesth,
     },
-    {
-      name: 'B.Sc Anaesthesia and Operation',
-      description: 'B.Sc Anaesthesia and Operation Theatre',
-      views: 554,
-      category: 'Paramedical',
-      image: BscAnasth,
-    },
-    {
-      name: 'M.Sc Echocardiography',
-      description: 'M.Sc Echocardiography is a two-year course',
-      views: 478,
-      category: 'Paramedical',
-      image: MscEcho,
-    },
-    {
-      name: 'B.Sc Microbiology',
-      description: 'B.Sc Microbiology is a 3-year course',
-      views: 416,
-      category: 'Paramedical',
-      image: BscMicrobiology,
-    },
+    // other course items...
   ];
+
+  const handleCourseClick = (category) => {
+    navigate(`/colleges/${category.toLowerCase()}`);
+  };
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-6">Popular Courses</h2>
-      
-      {/* Navigation Bar */}
-      <nav className="bg-green-500 p-4 mb-6">
-        <ul className="flex flex-wrap justify-center space-x-4 sm:space-x-8">
-          <li>
-            <a href="#"  className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded">
-              Paramedical
-            </a>
-          </li>
-          <li>
-            <a href="#"  className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded">
-              Medical
-            </a>
-          </li>
-          <li>
-            <a href="#"  className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded">
-              Physiotherapy
-            </a>
-          </li>
-          <li>
-            <a href="#"  className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded">
-              Pharmacy
-            </a>
-          </li>
-          <li>
-            <a href="#"  className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded">
-              Nursing
-            </a>
-          </li>
-        </ul>
-      </nav>
 
-      {/* Courses Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {courses.map((course, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg overflow-hidden"
+            onClick={() => handleCourseClick(course.category)}
+            className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
           >
             <img
               className="w-full h-32 sm:h-48 object-cover"

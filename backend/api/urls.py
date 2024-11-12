@@ -8,7 +8,7 @@ from .views import (
     CollegeImageViewSet,
     CourseViewSet, 
     UniversityViewSet,
-    FacilityViewSet,
+    # FacilityViewSet,
     CollegeList,
     LoginView,
     send_whatsapp,
@@ -20,7 +20,7 @@ router.register(r'colleges', CollegeViewSet)
 router.register(r'college-images', CollegeImageViewSet)
 router.register(r'courses', CourseViewSet)
 router.register(r'universities', UniversityViewSet)
-router.register(r'facilities', FacilityViewSet)
+# router.register(r'facilities', FacilityViewSet)
 
 
 

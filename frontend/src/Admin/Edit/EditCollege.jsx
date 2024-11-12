@@ -31,7 +31,7 @@ const EditCollege = () => {
           },
         });
         setCollege(response.data);
-        setSelectedFacilities(response.data.facilities.map(facility => facility.id));
+        // setSelectedFacilities(response.data.facilities.map(facility => facility.id));
       } catch (error) {
         console.error('Error fetching college:', error);
       }
@@ -50,22 +50,22 @@ const EditCollege = () => {
       }
     };
 
-    const fetchFacilities = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/facilities/', {
-          headers: {
-            'Authorization': `Token ${token}`,
-          },
-        });
-        setFacilities(response.data); // Set fetched facilities into state
-      } catch (error) {
-        console.error('Error fetching facilities:', error);
-      }
-    };
+    // const fetchFacilities = async () => {
+    //   try {
+    //     const response = await axios.get('http://localhost:8000/api/facilities/', {
+    //       headers: {
+    //         'Authorization': `Token ${token}`,
+    //       },
+    //     });
+    //     setFacilities(response.data); // Set fetched facilities into state
+    //   } catch (error) {
+    //     console.error('Error fetching facilities:', error);
+    //   }
+    // };
 
     fetchCollege();
     fetchUniversities();
-    fetchFacilities();
+    // fetchFacilities();
   }, [id]);
 
   const handleUpdateCollege = async (event) => {
@@ -79,11 +79,11 @@ const EditCollege = () => {
     
     
     
-    selectedFacilities.forEach(facilityId => {
-      formData.append('facilities', Number(facilityId));
-    });
+    // selectedFacilities.forEach(facilityId => {
+    //   formData.append('facilities', Number(facilityId));
+    // });
     
-    console.log('FormData Before Sending:', formData);
+    // console.log('FormData Before Sending:', formData);
 
 
     const existingImageIds = college.images

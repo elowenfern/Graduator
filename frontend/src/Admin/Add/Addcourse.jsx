@@ -4,7 +4,23 @@ import { useNavigate } from 'react-router-dom';
 
 const AddCourse = () => {
   const [colleges, setColleges] = useState([]);
+  const [categories, setCategories] = useState([
+    { value: 'science', label: 'Science' },
+    { value: 'arts', label: 'Arts' },
+    { value: 'commerce', label: 'Commerce' },
+    { value: 'engineering', label: 'Engineering' },
+    { value: 'management', label: 'Management' },
+    { value: 'medical', label: 'Medical' },
+    { value: 'pharmacy', label: 'Pharmacy' },
+    { value: 'law', label: 'Law' },
+    { value: 'agriculture', label: 'Agriculture' },
+    { value: 'paramedical', label: 'Paramedical' },
+    { value: 'design', label: 'Design' },
+    { value: 'allied health science', label: 'Allied Health Science' },
+    { value: 'veterinary', label: 'Veterinary' },
+  ]);
   const [selectedCollege, setSelectedCollege] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [courseData, setCourseData] = useState({
     name: '',
     description: '',
@@ -49,6 +65,7 @@ const AddCourse = () => {
     const newCourse = {
       ...courseData,
       college: selectedCollege, // Attach the selected college
+      category: selectedCategory, // Attach the selected category
     };
 
     try {
@@ -66,7 +83,7 @@ const AddCourse = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 max-h-[80vh] overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4">Add New Course</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {/* Select College */}
@@ -86,6 +103,28 @@ const AddCourse = () => {
             {colleges.map((college) => (
               <option key={college.id} value={college.id}>
                 {college.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Select Category */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            Course Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
+            <option value="">-- Select Category --</option>
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
               </option>
             ))}
           </select>

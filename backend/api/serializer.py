@@ -22,7 +22,7 @@ class FacilitySerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id', 'name', 'description', 'fees', 'semester','years','college']  # Add 'college'
+        fields = ['id', 'name', 'description', 'fees', 'semester','years','college','category']  # Add 'college'
 
 
 

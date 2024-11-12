@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import College, CollegeImage,Facility,Course,University
 from .serializer import CollegeSerializer, CollegeImageSerializer, FacilitySerializer,CourseSerializer,UniversitySerializer
-
+# from .pagination import CoursePagination
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import status
@@ -211,10 +211,21 @@ class CollegeCreateView(generics.CreateAPIView):
 class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
-
-
     def get_queryset(self):
-        return College.objects.all()
+        queryset = College.objects.all()  # Start by fetching all colleges
+        category = self.request.query_params.get('category', None)  # Get the 'category' parameter from the request
+        course_name = self.request.query_params.get('course', None)
+        location = self.request.query_params.get('location', None)  # Get the 'location' parameter
+        if location:
+            # Filter by location if it is provided
+            queryset = queryset.filter(location=location)
+        if category:
+            # If a category is specified, filter the colleges by the course category
+            queryset = queryset.filter(courses__category=category)
+        if course_name:
+            queryset = queryset.filter(courses__name=course_name)
+        return queryset
+
     def perform_update(self, serializer):
         # Custom update method for handling facilities
         serializer.save()
@@ -222,8 +233,9 @@ class CollegeViewSet(viewsets.ModelViewSet):
 
 
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
+    queryset = Course.objects.all().order_by('name') 
     serializer_class = CourseSerializer
+    
 
     def perform_create(self, serializer):
         college_id = self.request.data.get('college')
@@ -265,6 +277,6 @@ class UniversityViewSet(viewsets.ModelViewSet):
         # Handle incoming POST request and create new university
         return super().create(request, *args, **kwargs)
     
-class FacilityViewSet(viewsets.ModelViewSet):
-    queryset = Facility.objects.all()
-    serializer_class = FacilitySerializer
+# class FacilityViewSet(viewsets.ModelViewSet):
+#     queryset = Facility.objects.all()
+#     serializer_class = FacilitySerializer
