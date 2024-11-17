@@ -1,42 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const Filteredloc = () => {
-  const { location } = useParams();  // Get the location from the URL
+  const { location } = useParams();
   const [colleges, setColleges] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchColleges = async () => {
-      const response = await fetch(`/api/colleges?location=${location}`); // API call to get colleges by location
-      const data = await response.json();
-      setColleges(data);
+    const fetchCollegesByLocation = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/locations/${location}/colleges`);
+        const data = await response.json();
+        if (response.ok) {
+          setColleges(data.colleges || []);
+        } else {
+          setError('Failed to fetch colleges for this location');
+        }
+      } catch (err) {
+        setError('An error occurred while fetching colleges');
+      }
     };
 
-    fetchColleges();
+    fetchCollegesByLocation();
   }, [location]);
 
   return (
     <section className="p-10 bg-gray-100 text-gray-900">
       <h2 className="text-3xl font-bold text-center">Colleges in {location}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-        {colleges.length > 0 ? (
+      {error && <p className="text-center text-red-500">{error}</p>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        {colleges.length === 0 ? (
+          <p className="text-center col-span-full text-gray-600">
+            No colleges found in this location.
+          </p>
+        ) : (
           colleges.map((college, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-4">
-              <img
-                src={college.image}
-                alt={college.name}
-                className="w-full h-32 object-cover rounded-lg"
-              />
-              <h3 className="text-xl font-semibold mt-2">{college.name}</h3>
-              <p className="mt-1">{college.description}</p>
+            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="h-48 bg-gray-200">
+                {college.image ? (
+                  <img
+                    src={`http://localhost:8000${college.image}`}
+                    alt={`Image of ${college.name}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <p>No image available</p>
+                )}
+              </div>
+              <div className="p-4">
+              <Link to={`/colleges/${college.id}`}>
+                <h3 className="text-xl font-extrabold text-teal-600 uppercase tracking-wide hover:text-teal-800 transition-all duration-300">
+                  {college.name}
+                </h3>
+                </Link>
+                <p className="text-gray-600 mt-1">{college.location}</p>
+              </div>
             </div>
           ))
-        ) : (
-          <p>No colleges found in {location}.</p>
         )}
       </div>
     </section>
   );
 };
+
+
 
 export default Filteredloc;

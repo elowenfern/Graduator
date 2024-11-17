@@ -2,11 +2,8 @@ from django.db import models
 
 # Create your models here.
 
-    
 
     
-
-
 
 
 class University(models.Model):
@@ -19,6 +16,8 @@ class University(models.Model):
     def __str__(self):
         return self.name  
 
+
+
 class College(models.Model):
     name=models.CharField(max_length=100)
     location=models.CharField(max_length=100)
@@ -30,6 +29,13 @@ class College(models.Model):
     def __str__(self):
         return self.name
     
+    
+class Section(models.Model):
+    name = models.CharField(max_length=100)
+    college = models.ForeignKey(College, on_delete=models.CASCADE,null=True,blank=True) 
+    def __str__(self):
+        return self.name
+    
 class Facility(models.Model):
     name = models.CharField(max_length=255, default="Unnamed Facility")
     icon = models.CharField(max_length=255, blank=True, null=True)
@@ -37,6 +43,8 @@ class Facility(models.Model):
     def __str__(self):
         return self.name 
     
+
+
 class Course(models.Model):
     CATEGORY_CHOICES = [
         ('science', 'Science'),
@@ -45,7 +53,7 @@ class Course(models.Model):
         ('engineering', 'Engineering'),
         ('management','Management'),
         ('medical','Medical'),
-        ('Pharmacy','pharmacy'),
+        ('pharmacy','Pharmacy'),
         ('law','Law'),
         ('agriculture','Agriculture'),
         ('paramedical','Paramedical'),
@@ -66,9 +74,6 @@ class Course(models.Model):
         return self.name
     class Meta:
         ordering = ['name'] 
-    
-
-
     
 
 

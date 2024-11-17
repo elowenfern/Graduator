@@ -2,9 +2,10 @@
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import College, CollegeImage,Facility,Course,University
-from .serializer import CollegeSerializer, CollegeImageSerializer, FacilitySerializer,CourseSerializer,UniversitySerializer
+from .models import College, CollegeImage,Facility,Course,University,Section
+from .serializer import CollegeSerializer, CollegeImageSerializer, FacilitySerializer,CourseSerializer,UniversitySerializer,SectionSerializer
 # from .pagination import CoursePagination
+from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import status
@@ -15,6 +16,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 import json
+from django.shortcuts import get_list_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from twilio.rest import Client
@@ -212,18 +214,23 @@ class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
     def get_queryset(self):
-        queryset = College.objects.all()  # Start by fetching all colleges
-        category = self.request.query_params.get('category', None)  # Get the 'category' parameter from the request
-        course_name = self.request.query_params.get('course', None)
-        location = self.request.query_params.get('location', None)  # Get the 'location' parameter
+        queryset = College.objects.all()
+
+        course_name = self.request.query_params.get('course')  # Start by fetching all colleges
+        course_category = self.request.query_params.get('category')
+        location = self.request.query_params.get('location', None) 
+        university_id = self.request.query_params.get('university_id')
+        
         if location:
-            # Filter by location if it is provided
-            queryset = queryset.filter(location=location)
-        if category:
-            # If a category is specified, filter the colleges by the course category
-            queryset = queryset.filter(courses__category=category)
+            queryset = queryset.filter(location__icontains=location)
         if course_name:
-            queryset = queryset.filter(courses__name=course_name)
+            queryset = queryset.filter(courses__name__icontains=course_name)
+        
+        if course_category:
+            queryset = queryset.filter(courses__category=course_category)
+        
+        if university_id:
+            queryset = queryset.filter(university_id=university_id)
         return queryset
 
     def perform_update(self, serializer):
@@ -280,3 +287,109 @@ class UniversityViewSet(viewsets.ModelViewSet):
 # class FacilityViewSet(viewsets.ModelViewSet):
 #     queryset = Facility.objects.all()
 #     serializer_class = FacilitySerializer
+
+class SectionViewSet(viewsets.ModelViewSet):
+    queryset = Section.objects.all()
+    serializer_class = SectionSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+             print("Validation errors:", serializer.errors) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def retrieve(self, request, *args, **kwargs):
+        section = self.get_object()
+        # Serialize the related colleges and return them in the response
+        colleges = section.colleges.all()
+        serializer = self.get_serializer(section)
+        section_data = serializer.data
+        section_data['colleges'] = CollegeSerializer(colleges, many=True).data
+        return Response(section_data)
+    
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
+
+
+
+#filter
+
+def unique_locations(request):
+    # Fetch unique locations from the College model
+    locations = College.objects.values_list('location', flat=True).distinct()
+    return JsonResponse({'locations': list(locations)})
+
+def colleges_by_location(request, location):
+    colleges = College.objects.filter(location=location)  # Use filter instead of get_list_or_404
+    data = []
+
+    for college in colleges:
+        # Check if the college has related images
+        image_url = None
+        college_images = CollegeImage.objects.filter(college=college)
+        if college_images.exists():
+            # Get the first image related to the college (or modify as needed)
+            image_url = college_images.first().image.url
+
+        data.append({
+            'id': college.id,
+            'name': college.name,
+            'location': college.location,
+            'image': image_url,  # Use the image_url from CollegeImage
+        })
+    
+    return JsonResponse({'colleges': data})
+
+def colleges_by_section(request, section_name):
+    # Fetch all sections matching the name
+    sections = Section.objects.filter(name__iexact=section_name)
+    
+    # If no sections are found
+    if not sections.exists():
+        return JsonResponse({'error': 'No sections found'}, status=404)
+
+    colleges = []
+    for section in sections:
+        college = section.college
+        college_image = college.images.first()
+        colleges.append({
+            'id':college.id,
+            'name': college.name,
+            'location': college.location,
+            'image': college_image.image.url if college_image else None
+        })
+    
+    return JsonResponse({'colleges': colleges})
+ 
+
+def get_course_categories(request):
+    categories = [{'key': key, 'value': value} for key, value in Course.CATEGORY_CHOICES]
+    return JsonResponse(categories, safe=False)
+
+
+
+
+def colleges_by_category(request):
+    category = request.GET.get('category', None)
+    if category:
+        colleges = College.objects.filter(courses__category=category).distinct()
+    else:
+        colleges = College.objects.all()
+
+    # Build the response data
+    data = [
+        {
+            "id": college.id,
+            "name": college.name,
+            "location": college.location,
+            "image": college.images.first().image.url if college.images.exists() else None  # Use first image or None
+        }
+        for college in colleges
+    ]
+
+    return JsonResponse(data, safe=False)

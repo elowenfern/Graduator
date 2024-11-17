@@ -41,6 +41,12 @@ import {
       path: '/allcourse',
       icon: <HiOutlineViewGrid />
     },
+    {
+      key: 'Section',
+      label: 'Section',
+      path: '/addsection',
+      icon: <HiOutlineViewGrid />
+    },
     // {
     //   key: 'Add Facility',
     //   label: 'Add facility',
@@ -59,12 +65,12 @@ import {
     //   path: '/transactions',
     //   icon: <HiOutlineDocumentText />
     // },
-    {
-      key: 'messages',
-      label: 'Messages',
-      path: '/messages',
-      icon: <HiOutlineAnnotation />
-    }
+    // {
+    //   key: 'messages',
+    //   label: 'Messages',
+    //   path: '/messages',
+    //   icon: <HiOutlineAnnotation />
+    // }
   ];
   export const DASHBOARD_SIDEBAR_BOTTOM_LINKS=[
     {

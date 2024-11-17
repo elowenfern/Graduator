@@ -18,7 +18,8 @@ import CoursesPage from './Admin/Edit/Editcourses';
 import AddFacility from './Admin/Add/Addfacilities';
 import FilteredCoursename from './user/Filter/Filtercoursename';
 import Filteredloc from './user/Filter/Filteredlocation';
-
+import AddSectionForm from './Admin/Add/Addsection';
+import Coursed from './user/Coursesd.jsx/Coursesd';
 
 
 // Layout component to apply the Header for specific routes
@@ -39,9 +40,10 @@ function App() {
             <Route path="/" element={<Home />} />
             
             <Route path="/colleges" element={<CollegeList />} />
+            <Route path="/courses" element={<Coursed />} />
             <Route path="/colleges/:id" element={<CollegeDetails />} />
             <Route path="/colleges/:category/:course" element={<FilteredCoursename />} />
-            <Route path="/colleges/location/:location" element={<Filteredloc />} />
+            <Route path="/location/:location" element={<Filteredloc />} />
             <Route path="/contact" element={<Contact />} />
           </Route>
 
@@ -54,6 +56,7 @@ function App() {
           <Route path="/edit/:id" element={<EditCollege/>} />
           <Route path="/addcollege" element={<AddColleges/>} />
           <Route path="/addcourse" element={<AddCourse/>} />
+          <Route path='/addsection' element={<AddSectionForm/>}/>
           <Route path="/addfacility" element={<AddFacility/>} />
           <Route path="/allcourse" element={<CollegesPage/>} />
           <Route path="/courses/:collegeId" element={<CoursesPage/>}/>

@@ -28,20 +28,20 @@ export const AddColleges = () => {
     fetchUniversities();
   }, []);
 
-  // Fetch existing facilities from the API
-  useEffect(() => {
-    const fetchFacilities = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/facilities/');
-        const data = await response.json();
-        setFacilities(data); // Populate facilities
-      } catch (err) {
-        setError('Failed to fetch facilities');
-      }
-    };
+  // // Fetch existing facilities from the API
+  // useEffect(() => {
+  //   const fetchFacilities = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:8000/api/facilities/');
+  //       const data = await response.json();
+  //       setFacilities(data); // Populate facilities
+  //     } catch (err) {
+  //       setError('Failed to fetch facilities');
+  //     }
+  //   };
 
-    fetchFacilities();
-  }, []);
+  //   fetchFacilities();
+  // }, []);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);

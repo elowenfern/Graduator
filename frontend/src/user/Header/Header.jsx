@@ -29,7 +29,7 @@ const Header = () => {
           <ul className="flex space-x-8 text-lg">
             <li><a href="/" className="hover:text-gray-200">Home</a></li>
             <li><Link to="/colleges" className="hover:text-gray-200">Colleges</Link></li>
-            <li><a href="/courses" className="hover:text-gray-200">Courses</a></li>
+            <li><Link to="/courses" className="hover:text-gray-200">Courses</Link></li>
             <li><a href="/contact" className="hover:text-gray-200">Contact Us</a></li>
           </ul>
         </nav>

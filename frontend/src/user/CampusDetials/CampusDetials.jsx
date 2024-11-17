@@ -1,95 +1,113 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import React, { useState, useEffect } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 
 const CampusDetails = () => {
-  const navigate = useNavigate();  // Initialize useNavigate for programmatic navigation
+  const [colleges, setColleges] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  // Fetch colleges for the "Top" section
+  useEffect(() => {
+    const fetchTopColleges = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/sections/Top/colleges/');
+        const data = await response.json();
+        if (response.ok) {
+          setColleges(data.colleges || []);
+        } else {
+          setError('Failed to fetch colleges for the "Top" section');
+        }
+      } catch (err) {
+        setError('An error occurred while fetching colleges for the "Top" section');
+      }
+    };
 
-  const colleges = [
-    {
-      name: 'SREENIVASA COLLEGE',
-      location: 'Bangalore',
-      description: 'Known for its excellent engineering programs and research opportunities.',
-      image: 'https://example.com/path/to/sreenivasa-college-image.jpg',
-    },
-    {
-      name: 'SRIVINAYAKA COLLEGE',
-      location: 'Mangalore',
-      description: 'Offers a wide range of undergraduate and postgraduate courses.',
-      image: 'https://example.com/path/to/srivnayaka-college-image.jpg',
-    },
-    {
-      name: 'VIVEKANANDA COLLEGE',
-      location: 'Ernakulam',
-      description: 'Focuses on holistic development and academic excellence.',
-      image: 'https://example.com/path/to/vivekananda-college-image.jpg',
-    },
-    {
-      name: 'R.V. COLLEGE OF ENGINEERING',
-      location: 'Bangalore',
-      description: 'Renowned for its engineering courses and industry connections.',
-      image: 'https://example.com/path/to/rv-college-image.jpg',
-    },
-  ];
+    fetchTopColleges();
+  }, []);
 
-  // Function to handle location click and redirect to the filtered colleges page
+  // Fetch unique locations (optional for location filtering)
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/locations/');
+        const data = await response.json();
+        if (response.ok) {
+          setLocations(data.locations || []);
+        } else {
+          setError('Failed to fetch locations');
+        }
+      } catch (err) {
+        setError('An error occurred while fetching locations');
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
   const handleLocationClick = (location) => {
-    navigate(`/colleges/location/${location}`); // Navigate to the location-specific route
+    navigate(`/location/${location}`);
   };
 
   return (
     <section className="p-10 bg-gray-100 text-gray-900">
-      <h2 className="text-3xl font-bold text-center">Top Colleges</h2>
-      <p className="mt-4 text-center">
-        Explore our top colleges renowned for their academic excellence and vibrant campus life.
-      </p>
-      
-      {/* Location Navigation */}
+      {/* Navbar with Locations */}
       <nav className="bg-green-500 p-4 mb-6">
         <ul className="flex justify-center space-x-8">
-          <li>
-            <a
-              href="#"
-              className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded"
-              onClick={() => handleLocationClick('Bangalore')} // Trigger redirect for Bangalore
-            >
-              Bangalore
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded"
-              onClick={() => handleLocationClick('Mangalore')} // Trigger redirect for Mangalore
-            >
-              Mangalore
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded"
-              onClick={() => handleLocationClick('Ernakulam')} // Trigger redirect for Ernakulam
-            >
-              Ernakulam
-            </a>
-          </li>
+          {locations.map((location, index) => (
+            <li key={index}>
+              <a
+                href="#"
+                className="text-white font-bold hover:text-green-500 hover:bg-white p-2 rounded"
+                onClick={() => handleLocationClick(location)}
+              >
+                {location}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
-      
-      {/* Colleges Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-        {colleges.map((college, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-md p-4">
-            <img
-              src={college.image}
-              alt={college.name}
-              className="w-full h-32 object-cover rounded-lg"
-            />
-            <h3 className="text-xl font-semibold mt-2">{college.name}</h3>
-            <p className="mt-1">{college.description}</p>
-          </div>
-        ))}
+
+      <h2 className="text-3xl font-bold text-center">Top Colleges</h2>
+      <p className="mt-4 text-center">Explore top colleges.</p>
+
+      {/* Display Colleges */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        {colleges.length === 0 ? (
+          <p className="text-center text-red-500 col-span-full">
+            No colleges available in the "Top" section.
+          </p>
+        ) : (
+          colleges.map((college, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+              {/* Image */}
+              <div className="h-48 bg-gray-200">
+                {college.image ? (
+                  <img
+                    src={`http://localhost:8000${college.image}`} // Assuming the image URL is relative and served by Django
+                    alt={`Image of ${college.name}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <p>No image available</p>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="p-4">
+              <Link to={`/colleges/${college.id}`}>
+                <h3 className="text-xl font-extrabold text-teal-600 uppercase tracking-wide hover:text-teal-800 transition-all duration-300">
+                  {college.name}
+                </h3>
+              </Link>
+                <p className="text-gray-600 mt-1">{college.location}</p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
+
+      {/* Error Message */}
+      {error && <p className="text-center text-red-500 mt-4">{error}</p>}
     </section>
   );
 };

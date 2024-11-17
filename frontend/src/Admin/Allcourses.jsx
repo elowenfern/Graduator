@@ -59,12 +59,12 @@ const CollegesPage = () => {
                       Courses
                     </button>
                   </Link>
-                  <button
+                  {/* <button
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     onClick={() => handleDelete(college.id)}
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))
