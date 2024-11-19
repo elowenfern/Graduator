@@ -24,11 +24,27 @@ const BestCourses = () => {
       category: 'paramedical',
       image: MscAnaesth,
     },
-    // other course items...
+    {
+      name: 'B.Sc Anaesthesia',
+      description: 'B.Sc Anaesthesia and Operation Theatre',
+      views: 675,
+      category: 'paramedical',
+      image: BscAnasth,
+    },
+    {
+      name: 'M.Sc Echocardiography',
+      description: 'M.Sc Echocardiography Technology',
+      views: 420,
+      category: 'paramedical',
+      image: MscEcho,
+    },
+    // Add more courses as needed
   ];
 
-  const handleCourseClick = (category) => {
-    navigate(`/colleges/${category.toLowerCase()}`);
+  // Handle course selection
+  const handleCourseClick = (course) => {
+    // Navigate to the colleges page with the selected category
+    navigate(`/collegee/${course.name}`);
   };
 
   return (
@@ -39,7 +55,7 @@ const BestCourses = () => {
         {courses.map((course, index) => (
           <div
             key={index}
-            onClick={() => handleCourseClick(course.category)}
+            onClick={() => handleCourseClick(course)}
             className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
           >
             <img

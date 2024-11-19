@@ -61,6 +61,7 @@ class CollegeSerializer(serializers.ModelSerializer):
         instance.location = validated_data.get('location', instance.location)
         instance.description = validated_data.get('description', instance.description)
         instance.university = validated_data.get('university', instance.university)
+        instance.google_map_url = validated_data.get('google_map_url', instance.google_map_url)
 
         # Save instance with updated basic fields
         instance.save()

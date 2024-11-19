@@ -1,76 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom'; // To get route parameters and use Link for navigation
 
 const FilteredColleges = () => {
+  const { category, course } = useParams();  // Extract category and course from the URL
   const [colleges, setColleges] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState('');
-  
+  const [loading, setLoading] = useState(true);
+
+  // Fetch colleges based on the course
   useEffect(() => {
     const fetchColleges = async () => {
-      let url = '/api/colleges/';  // Base API URL
-
-      // Add query parameters if category or course is selected
-      if (selectedCategory) {
-        url += `?category=${selectedCategory}`;
-      }
-      if (selectedCourse) {
-        url += `?course=${selectedCourse}`;
-      }
-
       try {
-        const response = await fetch(url);
+        // Assuming you have an API that filters by category and course
+        const response = await fetch(`http://localhost:8000/api/college?course_name=${course}`);
         const data = await response.json();
-        setColleges(data);  // Set the colleges state with fetched data
+        console.log('Fetched data:', data); 
+        setColleges(data);  // Store the fetched colleges
       } catch (error) {
         console.error('Error fetching colleges:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchColleges();
-  }, [selectedCategory, selectedCourse]);  // Re-fetch when category or course changes
+  }, [course]);  // Run this effect when course changes
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (colleges.length === 0) {
+    return <div>No colleges found offering {course} in {category} category.</div>;
+  }
 
   return (
     <div>
-      <h1>Filtered Colleges</h1>
-
-      {/* Category filter */}
-      <select
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        value={selectedCategory}
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6">
+    Colleges Offering {course} in {category} Category
+  </h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {colleges.map((college) => (
+       
+      <div
+        key={college.id}
+        className="border rounded-lg p-4 shadow-lg transition-transform transform hover:scale-105"
       >
-        <option value="">Select Category</option>
-        <option value="paramedical">Paramedical</option>
-        <option value="medical">Medical</option>
-        <option value="engineering">Engineering</option>
-        {/* Add other categories as needed */}
-      </select>
-
-      {/* Course filter */}
-      <select
-        onChange={(e) => setSelectedCourse(e.target.value)}
-        value={selectedCourse}
-      >
-        <option value="">Select Course</option>
-        <option value="B.Sc Medical Laboratory Tech">B.Sc Medical Laboratory Tech</option>
-        <option value="M.Sc Anaesthesia">M.Sc Anaesthesia</option>
-        {/* Add other course options as needed */}
-      </select>
-
-      {/* Display filtered colleges */}
-      <div className="college-list">
-        {colleges.length > 0 ? (
-          colleges.map((college) => (
-            <div key={college.id} className="college-card">
-              <h3>{college.name}</h3>
-              <p>{college.location}</p>
-              {/* Add other college details as needed */}
-            </div>
-          ))
-        ) : (
-          <p>No colleges found for the selected criteria.</p>
-        )}
+       
+       {college.images && college.images.length > 0 && (
+        
+              <img 
+                src={`http://localhost:8000${college.images[0].image}`}  // Accessing the first image's URL
+                alt={college.name}
+                className="w-full h-32 object-cover rounded-lg mb-4"
+              />
+            )}
+        
+        <h3 className="text-xl sm:text-2xl font-semibold mt-4">{college.name}</h3>
+        <p className="text-gray-600 text-sm sm:text-base">{college.location}</p>
+        <Link
+          to={`/colleges/${college.id}`}
+          className="block mt-4 text-center bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-300 ease-in-out"
+        >
+          Get Admission
+        </Link>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+
   );
 };
 

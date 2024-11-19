@@ -3,10 +3,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Courses, Fees, Photos, Description } from './Courses';
 import Book from '../Contact/Book';
+import UniversityDetail from './UniversityDetial'; // Import UniversityDetail
 
 const CollegeDetails = () => {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
+  const [university, setUniversity] = useState(null);
+   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -15,8 +18,22 @@ const CollegeDetails = () => {
   useEffect(() => {
     const fetchCollegeDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/editcolleges/${id}/`);
-        setCollege(response.data);
+        const response = await axios.get(`http://localhost:8000/api/colleges/${id}/`);
+        setCollege(response.data); // Set college data
+        console.log('College Data:', response.data); // Log the entire response data for debugging
+
+        // Fetch the university data if it exists
+        if (response.data.university) {
+          const universityResponse = await axios.get(`http://localhost:8000/api/universities/${response.data.university}/`);
+          setUniversity(universityResponse.data); // Set the university data
+        }
+        if (response.data.university) {
+          const universityResponse = await axios.get(`http://localhost:8000/api/universities/${response.data.university}/`);
+          setUniversity(universityResponse.data); // Set university data
+        }
+
+        
+
       } catch (err) {
         if (err.response && err.response.status === 404) {
           setError('College not found');
@@ -30,6 +47,7 @@ const CollegeDetails = () => {
 
     fetchCollegeDetails();
   }, [id]);
+
 
   // Modal open/close functionality
   const openModal = (index) => {
@@ -72,6 +90,13 @@ const CollegeDetails = () => {
           Description
         </a>
         <a
+          href="#university"
+          className="hover:underline"
+          onClick={() => setSelectedSection('university')}
+        >
+          University
+        </a>
+        <a
           href="#fees"
           className="hover:underline"
           onClick={() => setSelectedSection('fees')}
@@ -94,6 +119,11 @@ const CollegeDetails = () => {
         </a>
       </nav>
 
+      {/* University Details */}
+      {selectedSection === 'university' && university && (
+        <UniversityDetail university={university} />
+      )}
+
       {/* Conditional Rendering of Sections */}
       {selectedSection === 'photos' && (
         <div>
@@ -105,21 +135,16 @@ const CollegeDetails = () => {
             nextImage={nextImage}
             prevImage={prevImage}
           />
-          {/* Description below Photos */}
           <Description college={college} />
         </div>
       )}
 
       {selectedSection === 'description' && <Description college={college} />}
-      
       {selectedSection === 'fees' && <Fees college={college} />}
-      
       {selectedSection === 'courses' && <Courses college={college} />}
-      
       {selectedSection === 'book' && <Book />}
     </div>
   );
 };
 
 export default CollegeDetails;
-

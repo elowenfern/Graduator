@@ -9,11 +9,16 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from rest_framework.viewsets import ViewSet
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.exceptions import ValidationError
 import json
 from django.shortcuts import get_list_or_404
@@ -111,21 +116,40 @@ class LoginView(APIView):
 
 
 
-class CollegeList(generics.ListCreateAPIView):
-    queryset = College.objects.all()
-    serializer_class = CollegeSerializer
+# class CollegeList(generics.ListCreateAPIView):
+#     queryset = College.objects.all()
+#     serializer_class = CollegeSerializer
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
+#     search_fields = ['name', 'location', 'university_name'] 
     
-    def perform_create(self, serializer):
-        college = serializer.save()  # Save the college instance
+#     def perform_create(self, serializer):
+#         college = serializer.save()  # Save the college instance
         
-        # Handle image uploads if they are included in the request data
-        if 'images' in self.request.FILES:
-            for image in self.request.FILES.getlist('images'):
-                # Create CollegeImage instance using the file object
-                CollegeImage.objects.create(college=college, image=image)
+#         # Handle image uploads if they are included in the request data
+#         if 'images' in self.request.FILES:
+#             for image in self.request.FILES.getlist('images'):
+#                 # Create CollegeImage instance using the file object
+#                 CollegeImage.objects.create(college=college, image=image)
+#         else:
+#             raise ValidationError("No images uploaded")
+
+
+
+class CollegeListView(APIView):
+    def get(self, request):
+        # Get the course_name from query parameters
+        course_name = request.GET.get('course_name', '')
+        print(f"Received course name: {course_name}")  
+
+        # Filter colleges by course name if provided
+        if course_name:
+            colleges = College.objects.filter(courses__name__icontains=course_name)
         else:
-            raise ValidationError("No images uploaded")
-            
+            colleges = College.objects.all()
+
+        # Serialize the colleges and return the response
+        serializer = CollegeSerializer(colleges, many=True)
+        return Response(serializer.data)
 
 
 
@@ -136,8 +160,9 @@ class CollegeDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CollegeSerializer
 
     def perform_update(self, serializer):
-        college = serializer.save()
-        
+        college = serializer.save()  # Save the college instance
+
+        # Print request data and files for debugging
         print(f"Request Data: {self.request.data}")
         print(f"FILES: {self.request.FILES}")
 
@@ -150,28 +175,12 @@ class CollegeDetail(generics.RetrieveUpdateDestroyAPIView):
             college.images.exclude(id__in=existing_image_ids).delete()
         except json.JSONDecodeError:
             raise ValidationError({'existing_images': 'Invalid format'})
-        
-
-        # facilities_data = self.request.data.getlist('facilities')
-        # print(f"Facilities Data: {facilities_data}")
-        # try:
-        #     facilities_ids =facilities_data
-        #     if isinstance(facilities_ids, list) and all(facility_id.isdigit() for facility_id in facilities_data):  # Ensure it's a list
-        #         facilities_instances = Facility.objects.filter(id__in=facilities_ids)
-        #         college.facilities.set(facilities_instances)
-        #     else:
-        #         raise ValidationError({'facilities': 'Invalid format, expected a list of IDs'})
-        # except (json.JSONDecodeError, ValueError):
-        #     raise ValidationError({'facilities': 'Invalid format'})
-
-
 
         # Add new images from the 'images' field in request.FILES
         new_images = self.request.FILES.getlist('images')
         for image in new_images:
             CollegeImage.objects.create(college=college, image=image)
         
-
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', True)
         college = self.get_object()
@@ -210,33 +219,37 @@ class CollegeCreateView(generics.CreateAPIView):
 
 
 
+logger = logging.getLogger(__name__)
+
+
 class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
-    def get_queryset(self):
-        queryset = College.objects.all()
 
-        course_name = self.request.query_params.get('course')  # Start by fetching all colleges
-        course_category = self.request.query_params.get('category')
-        location = self.request.query_params.get('location', None) 
-        university_id = self.request.query_params.get('university_id')
-        
-        if location:
-            queryset = queryset.filter(location__icontains=location)
-        if course_name:
-            queryset = queryset.filter(courses__name__icontains=course_name)
-        
-        if course_category:
-            queryset = queryset.filter(courses__category=course_category)
-        
-        if university_id:
-            queryset = queryset.filter(university_id=university_id)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Retrieve the general search query
+        search_query = self.request.query_params.get('college_name', None)
+
+        if search_query:
+            # Create a filter to check multiple fields
+            filters = (
+                Q(name__icontains=search_query) |
+                Q(courses__name__icontains=search_query) |
+                Q(location__icontains=search_query) |
+                Q(university__name__icontains=search_query) |
+                Q(courses__category__icontains=search_query)
+            )
+            print(f"Applying filters: {filters}")
+            queryset = queryset.filter(filters).distinct()
+
+        print(f"Final queryset: {queryset}")
         return queryset
 
-    def perform_update(self, serializer):
-        # Custom update method for handling facilities
-        serializer.save()
 
+    def perform_update(self, serializer):
+        serializer.save()
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -284,9 +297,12 @@ class UniversityViewSet(viewsets.ModelViewSet):
         # Handle incoming POST request and create new university
         return super().create(request, *args, **kwargs)
     
-# class FacilityViewSet(viewsets.ModelViewSet):
-#     queryset = Facility.objects.all()
-#     serializer_class = FacilitySerializer
+
+
+
+
+
+
 
 class SectionViewSet(viewsets.ModelViewSet):
     queryset = Section.objects.all()
@@ -325,7 +341,11 @@ def unique_locations(request):
     return JsonResponse({'locations': list(locations)})
 
 def colleges_by_location(request, location):
+    print(f"Location requested: {location}")
     colleges = College.objects.filter(location=location)  # Use filter instead of get_list_or_404
+    if not colleges:
+        return JsonResponse({'colleges': []})
+    
     data = []
 
     for college in colleges:

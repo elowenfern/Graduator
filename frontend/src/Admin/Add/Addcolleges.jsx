@@ -8,9 +8,8 @@ export const AddColleges = () => {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
   const [universities, setUniversities] = useState([]); // State to store fetched universities
-  const [facilities, setFacilities] = useState([]); // State to store fetched facilities
   const [selectedUniversity, setSelectedUniversity] = useState(''); // State for selected university
-  const [selectedFacilities, setSelectedFacilities] = useState([]); // State for selected facilities
+  const [google_map_url, setGoogleMapUrl] = useState(''); // State for Google Map URL (changed to google_map_url)
   const [error, setError] = useState('');
 
   // Fetch existing universities from the API
@@ -28,34 +27,10 @@ export const AddColleges = () => {
     fetchUniversities();
   }, []);
 
-  // // Fetch existing facilities from the API
-  // useEffect(() => {
-  //   const fetchFacilities = async () => {
-  //     try {
-  //       const response = await fetch('http://localhost:8000/api/facilities/');
-  //       const data = await response.json();
-  //       setFacilities(data); // Populate facilities
-  //     } catch (err) {
-  //       setError('Failed to fetch facilities');
-  //     }
-  //   };
-
-  //   fetchFacilities();
-  // }, []);
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
   };
-
-  // const handleFacilityChange = (e) => {
-  //   const { value, checked } = e.target;
-  //   setSelectedFacilities((prevSelectedFacilities) =>
-  //     checked
-  //       ? [...prevSelectedFacilities, value]
-  //       : prevSelectedFacilities.filter((facility) => facility !== value)
-  //   );
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,17 +42,11 @@ export const AddColleges = () => {
     formData.append('location', location);
     formData.append('description', description);
     formData.append('university', selectedUniversity); // Add selected university
+    formData.append('google_map_url', google_map_url); // Add map location URL
 
-  
-    // formData.append('facilities', selectedFacilities.join(','));
-   
     images.forEach((image) => {
       formData.append('images', image); // Append each image to the form data
     });
-
-    // Existing images (if any) that you want to send along with the new data
-    const existingImages = [1, 2]; // Ensure these are integers (not strings)
-    formData.append('existing_images', JSON.stringify(existingImages));
 
     // Get the authentication token (make sure you replace it with the actual token)
     const token = localStorage.getItem("access_token"); // Replace with your actual token
@@ -175,7 +144,20 @@ export const AddColleges = () => {
             </select>
           </div>
 
-          
+          {/* Map location URL */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="google_map_url">
+              Map Location URL
+            </label>
+            <input
+              type="url"
+              id="google_map_url"
+              value={google_map_url}
+              onChange={(e) => setGoogleMapUrl(e.target.value)} // Changed to use setGoogleMapUrl
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+              placeholder="Enter Google Maps URL"
+            />
+          </div>
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700" htmlFor="images">

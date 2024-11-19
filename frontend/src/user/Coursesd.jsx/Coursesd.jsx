@@ -73,7 +73,7 @@ const Coursed = () => {
               <button
                 onClick={() => setSelectedCategory(category.key)}
                 className={`text-white font-semibold px-4 py-2 rounded ${
-                  selectedCategory === category.key ? "bg-blue-500" : "hover:text-blue-200"
+                  selectedCategory === category.key ? "bg-green-500" : "hover:text-blue-200"
                 }`}
               >
                 {category.value}

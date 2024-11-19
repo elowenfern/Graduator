@@ -39,6 +39,17 @@ const DASHBOARD = () => {
     fetchColleges(); // Fetch colleges on component mount
   }, []);
 
+  const handleMapLocation = (college) => {
+    // Assuming you have latitude and longitude in the college object
+    const { latitude, longitude } = college.location || {}; // Default to empty object if location is not available
+
+    // Generate the Google Maps URL
+    if (latitude && longitude) {
+      return `https://www.google.com/maps?q=${latitude},${longitude}`;
+    }
+    return ''; // Return an empty string if no location data
+  };
+
   return (
     <div>
       <table>
@@ -47,6 +58,7 @@ const DASHBOARD = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Location</th>
+            <th>Map URL</th> {/* Add a column for the map URL */}
             <th>Action</th>
           </tr>
         </thead>
@@ -57,6 +69,16 @@ const DASHBOARD = () => {
                 <td className="py-2 px-4 border-b">{college.id}</td>
                 <td className="py-2 px-4 border-b">{college.name}</td>
                 <td className="py-2 px-4 border-b">{college.location}</td>
+                <td className="py-2 px-4 border-b">
+                  {college.location ? (
+                    <a href={college.google_map_url} target="_blank" rel="noopener noreferrer">
+                    {college.google_map_url}
+                  </a>
+                  
+                  ) : (
+                    'No location available'
+                  )}
+                </td>
                 <td className="py-2 px-4 border-b">
                   <Link to={`/edit/${college.id}`}>
                     <button className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600">Edit</button>
@@ -75,7 +97,7 @@ const DASHBOARD = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="py-2 px-4 text-center">No colleges found</td>
+              <td colSpan="5" className="py-2 px-4 text-center">No colleges found</td>
             </tr>
           )}
         </tbody>

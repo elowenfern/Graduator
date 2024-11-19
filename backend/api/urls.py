@@ -8,9 +8,10 @@ from .views import (
     CollegeImageViewSet,
     CourseViewSet, 
     UniversityViewSet,
-    
-    CollegeList,
+    # CollegeSearchView,
+    # CollegeList,
     LoginView,
+    CollegeListView,
     send_whatsapp,
     SectionViewSet,
     unique_locations,
@@ -33,7 +34,8 @@ router.register(r'sections', SectionViewSet)
 
 urlpatterns = [
     path('send-whatsapp/', send_whatsapp, name='send_whatsapp'), 
-    path('colleges/', CollegeList.as_view(), name='college-list'),
+    path('college/', CollegeListView.as_view(), name='college-list'),
+    # path('colleges/', CollegeList.as_view(), name='college-list'),
     path('editcolleges/<int:pk>/', CollegeDetail.as_view(), name='college-detail'),
     path('', include(router.urls)),
     path('login/', LoginView.as_view(), name='admin_login'),

@@ -42,6 +42,12 @@ import {
       icon: <HiOutlineViewGrid />
     },
     {
+      key: 'University',
+      label: 'University',
+      path: '/university',
+      icon: <HiOutlineViewGrid />
+    },
+    {
       key: 'Section',
       label: 'Section',
       path: '/addsection',

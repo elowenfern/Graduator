@@ -11,6 +11,7 @@ const Filteredloc = () => {
       try {
         const response = await fetch(`http://localhost:8000/api/locations/${location}/colleges`);
         const data = await response.json();
+        console.log('API Response:', data);
         if (response.ok) {
           setColleges(data.colleges || []);
         } else {
