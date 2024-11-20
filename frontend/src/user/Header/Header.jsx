@@ -10,7 +10,8 @@ const Header = () => {
   // Handle search and filter
   const handleSearchAndFilter = () => {
     if (query.trim()) {
-      navigate(`/collegesearch?search=${query}`); // Redirect to /collegesearch with the search query
+      navigate(`/collegesearch?search=${query}`); 
+      setQuery("");
     }
   };
 

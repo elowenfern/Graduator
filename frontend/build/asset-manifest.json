@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.45111f3c.css",
+    "main.js": "/static/js/main.f2412b9e.js",
+    "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "static/media/map1.jpg": "/static/media/map1.2c56e73c961ff9385097.jpg",
+    "static/media/BscMicrobiology.jpeg": "/static/media/BscMicrobiology.e91552002b6b101a1589.jpeg",
+    "static/media/head.jpeg": "/static/media/head.a958becc704ef64afc52.jpeg",
+    "static/media/MscEcho.jpeg": "/static/media/MscEcho.437499d645b3c32fbbfd.jpeg",
+    "static/media/MscAnaesth.jpeg": "/static/media/MscAnaesth.c54d9c1c65edb9949e22.jpeg",
+    "static/media/Bscmed.jpeg": "/static/media/Bscmed.58ccf1fa3da1c6c3c1d2.jpeg",
+    "static/media/BscAnasth.jpeg": "/static/media/BscAnasth.e1b3935a5c78c318c43c.jpeg",
+    "index.html": "/index.html",
+    "main.45111f3c.css.map": "/static/css/main.45111f3c.css.map",
+    "main.f2412b9e.js.map": "/static/js/main.f2412b9e.js.map",
+    "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.45111f3c.css",
+    "static/js/main.f2412b9e.js"
+  ]
+}
