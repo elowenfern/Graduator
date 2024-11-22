@@ -35,21 +35,11 @@ const LayoutWithHeader = () => (
 );
 
 function App() {
-  // const [colleges, setColleges] = useState([]); // State to hold colleges data
-
-  // // Fetch colleges based on search query (this will be used for `/collegesearch` route)
-  // const fetchColleges = async (searchQuery) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/api/collegess/?search=${searchQuery}`);
-  //     const data = await response.json();
-  //     setColleges(data); // Set the fetched colleges in state
-  //   } catch (error) {
-  //     console.error("Error fetching colleges:", error);
-  //   }
-  // };
-
+ 
+  React.useEffect(() => {
+    document.title = "Graduator's Academy";
+  }, []);
   
-
   return (
     <div>
       <Router>
