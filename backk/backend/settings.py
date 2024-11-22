@@ -19,14 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'frontend/build/static')
-
-
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend", "build", "static"),  # Path to your React build folder
+    os.path.join(BASE_DIR, 'frontend/build/static'),  # Path for development
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 
