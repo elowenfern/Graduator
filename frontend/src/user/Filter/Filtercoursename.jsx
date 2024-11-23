@@ -5,13 +5,14 @@ const FilteredColleges = () => {
   const { category, course } = useParams();  // Extract category and course from the URL
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
   // Fetch colleges based on the course
   useEffect(() => {
     const fetchColleges = async () => {
       try {
         // Assuming you have an API that filters by category and course
-        const response = await fetch(`http://localhost:8000/api/college?course_name=${course}`);
+        const response = await fetch(`${baseURL}/api/college?course_name=${course}`);
         const data = await response.json();
         console.log('Fetched data:', data); 
         setColleges(data);  // Store the fetched colleges
@@ -49,7 +50,7 @@ const FilteredColleges = () => {
        {college.images && college.images.length > 0 && (
         
               <img 
-                src={`http://localhost:8000${college.images[0].image}`}  // Accessing the first image's URL
+                src={`${baseURL}${college.images[0].image}`}  // Accessing the first image's URL
                 alt={college.name}
                 className="w-full h-32 object-cover rounded-lg mb-4"
               />

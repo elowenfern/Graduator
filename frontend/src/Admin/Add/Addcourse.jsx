@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddCourse = () => {
   const [colleges, setColleges] = useState([]);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [categories, setCategories] = useState([
     { value: 'science', label: 'Science' },
     { value: 'arts', label: 'Arts' },
@@ -35,7 +36,7 @@ const AddCourse = () => {
   useEffect(() => {
     const fetchColleges = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/colleges/', {
+        const response = await axios.get(`${baseURL}/api/colleges/`, {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -70,7 +71,7 @@ const AddCourse = () => {
 
     try {
       // Send the course data to the backend
-      const response = await axios.post('http://localhost:8000/api/courses/', newCourse, {
+      const response = await axios.post(`${baseURL}/api/courses/`, newCourse, {
         headers: {
           'Authorization': `Token ${token}`,
         },

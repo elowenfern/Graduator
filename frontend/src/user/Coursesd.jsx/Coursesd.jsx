@@ -8,12 +8,14 @@ const Coursed = () => {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingColleges, setLoadingColleges] = useState(false);
   const [error, setError] = useState(null);
+  
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const navigate = useNavigate();  // Initialize navigate
 
   // Fetch categories and set the initial selected category
   useEffect(() => {
-    fetch("http://localhost:8000/api/course-categories/")
+    fetch(`${baseURL}/api/course-categories/`)
       .then((response) => response.json())
       .then((data) => {
         setCategories(data);
@@ -34,7 +36,7 @@ const Coursed = () => {
     if (selectedCategory) {
       setLoadingColleges(true);
       setError(null);
-      fetch(`http://localhost:8000/api/course_colleges/?category=${selectedCategory}`)
+      fetch(`${baseURL}/api/course_colleges/?category=${selectedCategory}`)
         .then((response) => response.json())
         .then((data) => {
           console.log("Response data:", data); // Log the API response
@@ -98,7 +100,7 @@ const Coursed = () => {
             onClick={() => handleCollegeClick(college.id)}  // Add onClick event to navigate
           >
             <img
-              src={`http://localhost:8000${college.image}`}
+              src={`${baseURL}${college.image}`}
               alt={college.name}
               className="w-full h-48 object-cover"
             />

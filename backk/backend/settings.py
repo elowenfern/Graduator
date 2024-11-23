@@ -20,7 +20,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static'),  # Path for development
+    os.path.join(BASE_DIR, '../frontend/build/static'),  # Path for development
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -33,13 +33,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7@s(dh_45z^yd3_o1onsfuqjw=$y-(evbg#3(393a=wa6zmeq!'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOWED_ORIGINS = []
-ALLOWED_HOSTS = ['graduatorsacademy.com','']
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'https://www.graduatorsacademy.com',
+]
+ALLOWED_HOSTS = ['graduatorsacademy.com','localhost', '127.0.0.1',]
 
 
 
@@ -66,6 +69,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'django_filters',
     'api',
 ]
 

@@ -9,6 +9,7 @@ const CoursesPage = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [editingCourse, setEditingCourse] = useState(null);
   const [updatedCourseData, setUpdatedCourseData] = useState({
     name: '',
@@ -25,7 +26,7 @@ const CoursesPage = () => {
   const fetchCourses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/courses/?college_id=${collegeId}&page=${page}`, {
+      const response = await axios.get(`${baseURL}/api/courses/?college_id=${collegeId}&page=${page}`, {
         headers: {
           'Authorization': `Token ${token}`,
         },
@@ -65,7 +66,7 @@ const CoursesPage = () => {
 
   const handleEditCourse = async () => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/courses/${editingCourse.id}/`, updatedCourseData, {
+      const response = await axios.put(`${baseURL}/api/courses/${editingCourse.id}/`, updatedCourseData, {
         headers: {
           'Authorization': `Token ${token}`,
         },
@@ -83,7 +84,7 @@ const CoursesPage = () => {
 
   const handleDeleteCourse = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/courses/${deletingCourse.id}/`, {
+      await axios.delete(`${baseURL}/api/courses/${deletingCourse.id}/`, {
         headers: {
           'Authorization': `Token ${token}`,
         },

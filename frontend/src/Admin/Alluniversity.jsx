@@ -6,6 +6,7 @@ const AllUniversity = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [universityToDelete, setUniversityToDelete] = useState(null);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; 
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,7 +20,7 @@ const AllUniversity = () => {
   // Fetch universities from API
   const fetchUniversities = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/universities/");
+      const response = await fetch(`${baseURL}/api/universities/`);
       const data = await response.json();
       setUniversities(data);
       console.log(data);
@@ -77,7 +78,7 @@ const AllUniversity = () => {
     console.log("FormData being submitted:", formDataObj);
 
     try {
-      await fetch(`http://localhost:8000/api/universities/${editUniversity.id}/`, {
+      await fetch(`${baseURL}/api/universities/${editUniversity.id}/`, {
         method: "PUT",
         body: formDataObj,
       });
@@ -92,7 +93,7 @@ const AllUniversity = () => {
   const handleConfirmDelete = async () => {
     if (universityToDelete) {
       try {
-        await fetch(`http://localhost:8000/api/universities/${universityToDelete.id}/`, {
+        await fetch(`${baseURL}/api/universities/${universityToDelete.id}/`, {
           method: "DELETE",
         });
         fetchUniversities(); // Refresh the list

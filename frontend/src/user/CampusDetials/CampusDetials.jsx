@@ -6,11 +6,13 @@ const CampusDetails = () => {
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
   // Fetch colleges for the "Top" section
   useEffect(() => {
     const fetchTopColleges = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/sections/Top/colleges/');
+        const response = await fetch(`${baseURL}/api/sections/Top/colleges/`);
         const data = await response.json();
         if (response.ok) {
           setColleges(data.colleges || []);
@@ -29,7 +31,7 @@ const CampusDetails = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/locations/');
+        const response = await fetch(`${baseURL}/api/locations/`);
         const data = await response.json();
         if (response.ok) {
           setLocations(data.locations || []);
@@ -83,7 +85,7 @@ const CampusDetails = () => {
               <div className="h-48 bg-gray-200">
                 {college.image ? (
                   <img
-                    src={`http://localhost:8000${college.image}`} // Assuming the image URL is relative and served by Django
+                    src={`${baseURL}${college.image}`} // Assuming the image URL is relative and served by Django
                     alt={`Image of ${college.name}`}
                     className="w-full h-full object-cover"
                   />

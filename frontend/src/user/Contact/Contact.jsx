@@ -7,7 +7,8 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [messageColor, setMessageColor] = useState("black");
-
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ const Contact = () => {
     const formData = { name, email, phone, message };
 
     try {
-      const response = await fetch("http://localhost:8000/api/send-whatsapp/", {
+      const response = await fetch(`${baseURL}/api/send-whatsapp/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

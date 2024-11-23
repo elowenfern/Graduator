@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 
 const CollegesPage = () => {
   const [colleges, setColleges] = useState([]);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const fetchColleges = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/colleges/', {
+      const response = await axios.get(`${baseURL}/api/colleges/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`,
         },
@@ -20,7 +21,7 @@ const CollegesPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/colleges/${id}/`, {
+      await axios.delete(`${baseURL}/api/colleges/${id}/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`,
         },

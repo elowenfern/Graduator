@@ -7,6 +7,7 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -20,7 +21,7 @@ const SearchResults = () => {
           if (searchQuery) params.college_name = searchQuery; // Use a single parameter
   
           console.log("Sending params:", params);
-          const response = await axios.get("http://localhost:8000/api/colleges/", { params });
+          const response = await axios.get(`${baseURL}/api/colleges/`, { params });
           console.log("Response data:", response.data);
           setColleges(response.data);
         } catch (err) {

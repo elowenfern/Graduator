@@ -5,11 +5,14 @@ const Filteredloc = () => {
   const { location } = useParams();
   const [colleges, setColleges] = useState([]);
   const [error, setError] = useState(null);
+  
+
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     const fetchCollegesByLocation = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/locations/${location}/colleges`);
+        const response = await fetch(`${baseURL}/api/locations/${location}/colleges`);
         const data = await response.json();
         console.log('API Response:', data);
         if (response.ok) {
@@ -40,7 +43,7 @@ const Filteredloc = () => {
               <div className="h-48 bg-gray-200">
                 {college.image ? (
                   <img
-                    src={`http://localhost:8000${college.image}`}
+                    src={`${baseURL}${college.image}`}
                     alt={`Image of ${college.name}`}
                     className="w-full h-full object-cover"
                   />

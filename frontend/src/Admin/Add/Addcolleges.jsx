@@ -11,12 +11,13 @@ export const AddColleges = () => {
   const [selectedUniversity, setSelectedUniversity] = useState(''); // State for selected university
   const [google_map_url, setGoogleMapUrl] = useState(''); // State for Google Map URL (changed to google_map_url)
   const [error, setError] = useState('');
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   // Fetch existing universities from the API
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/universities/');
+        const response = await fetch(`${baseURL}/api/universities/`);
         const data = await response.json();
         setUniversities(data); // Populate universities
       } catch (err) {
@@ -53,7 +54,7 @@ export const AddColleges = () => {
 
     try {
       // Send POST request with Authorization header
-      const response = await fetch('http://localhost:8000/api/colleges/', {
+      const response = await fetch(`${baseURL}/api/colleges/`, {
         method: 'POST',
         body: formData,
         headers: {

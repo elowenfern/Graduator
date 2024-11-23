@@ -6,10 +6,11 @@ const DASHBOARD = () => {
   const [colleges, setColleges] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [collegeToDelete, setCollegeToDelete] = useState(null); // Track the college to be deleted
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; 
 
   const fetchColleges = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/colleges/', {
+      const response = await axios.get(`${baseURL}/api/colleges/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`, // Replace with your actual token
         },
@@ -22,7 +23,7 @@ const DASHBOARD = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/colleges/${collegeToDelete.id}/`, {
+      await axios.delete(`${baseURL}/api/colleges/${collegeToDelete.id}/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`, // Replace with your actual token
         },

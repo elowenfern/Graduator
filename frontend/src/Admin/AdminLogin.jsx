@@ -7,11 +7,12 @@ const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const onSubmit = async (data) => {
     try {
       // Send login credentials to backend
-      const response = await axios.post("http://localhost:8000/api/login/", {
+      const response = await axios.post(`${baseURL}/api/login/`,{
         email: data.email,
         password: data.password
       });

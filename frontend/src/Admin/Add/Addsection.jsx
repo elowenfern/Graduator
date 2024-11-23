@@ -11,14 +11,15 @@ const SectionTable = () => {
   const [validationError, setValidationError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [sectionToDelete, setSectionToDelete] = useState(null); // Track section to delete
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   // Fetch colleges and sections from the API
   const fetchCollegesAndSections = async () => {
     try {
-      const collegesResponse = await axios.get('http://localhost:8000/api/colleges/');
+      const collegesResponse = await axios.get(`${baseURL}/api/colleges/`);
       setColleges(collegesResponse.data);
 
-      const sectionsResponse = await axios.get('http://localhost:8000/api/sections/');
+      const sectionsResponse = await axios.get(`${baseURL}/api/sections/`);
       setSections(sectionsResponse.data); // Ensure the sections data is properly set
     } catch (error) {
       setError('Error fetching data');
@@ -38,7 +39,7 @@ const SectionTable = () => {
   
     try {
       // Send a single college ID (not an array)
-      const response = await axios.post('http://localhost:8000/api/sections/', {
+      const response = await axios.post(`${baseURL}/api/sections/`, {
         name: newSectionName,
         college: selectedColleges[0],  // Just the selected college ID (not an array)
       });
@@ -58,7 +59,7 @@ const SectionTable = () => {
     if (!sectionToDelete) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/sections/${sectionToDelete.id}/`);
+      await axios.delete(`${baseURL}/api/sections/${sectionToDelete.id}/`);
       fetchCollegesAndSections(); // Reload sections after deletion
       setDeleteConfirm(false);
       setSectionToDelete(null);

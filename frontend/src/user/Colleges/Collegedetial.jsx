@@ -9,7 +9,8 @@ const CollegeDetails = () => {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
   const [university, setUniversity] = useState(null);
-   
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -18,17 +19,17 @@ const CollegeDetails = () => {
   useEffect(() => {
     const fetchCollegeDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/colleges/${id}/`);
+        const response = await axios.get(`${baseURL}/api/colleges/${id}/`);
         setCollege(response.data); // Set college data
         console.log('College Data:', response.data); // Log the entire response data for debugging
 
         // Fetch the university data if it exists
         if (response.data.university) {
-          const universityResponse = await axios.get(`http://localhost:8000/api/universities/${response.data.university}/`);
+          const universityResponse = await axios.get(`${baseURL}/api/universities/${response.data.university}/`);
           setUniversity(universityResponse.data); // Set the university data
         }
         if (response.data.university) {
-          const universityResponse = await axios.get(`http://localhost:8000/api/universities/${response.data.university}/`);
+          const universityResponse = await axios.get(`${baseURL}/api/universities/${response.data.university}/`);
           setUniversity(universityResponse.data); // Set university data
         }
 

@@ -8,12 +8,14 @@ const Location = () => {
   const [loadingLocations, setLoadingLocations] = useState(true);
   const [loadingColleges, setLoadingColleges] = useState(false);
   const [error, setError] = useState(null);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
 
   const navigate = useNavigate();
 
   // Fetch locations
   useEffect(() => {
-    fetch("http://localhost:8000/api/locations/")
+    fetch(`${baseURL}/api/locations/`)
       .then((response) => response.json())
       .then((data) => {
         setLocations(data);
@@ -34,7 +36,7 @@ const Location = () => {
     if (selectedLocation) {
       setLoadingColleges(true);
       setError(null);
-      fetch(`http://localhost:8000/api/colleges/?location=${selectedLocation}`)
+      fetch(`${baseURL}/api/colleges/?location=${selectedLocation}`)
         .then((response) => response.json())
         .then((data) => {
           setColleges(data);
@@ -92,7 +94,7 @@ const Location = () => {
             onClick={() => handleCollegeClick(college.id)}
           >
             <img
-              src={`http://localhost:8000${college.image}`}
+              src={`${baseURL}${college.image}`}
               alt={college.name}
               className="w-full h-48 object-cover"
             />

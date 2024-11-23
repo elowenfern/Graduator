@@ -8,6 +8,8 @@ const EditCollege = () => {
   const navigate = useNavigate();
   const [facilities, setFacilities] = useState([]);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
   const [college, setCollege] = useState({
     name: '',
     location: '',
@@ -24,7 +26,7 @@ const EditCollege = () => {
   useEffect(() => {
     const fetchCollege = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/editcolleges/${id}/`, {
+        const response = await axios.get(`${baseURL}/api/editcolleges/${id}/`, {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -38,7 +40,7 @@ const EditCollege = () => {
 
     const fetchUniversities = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/universities/', { // Adjust endpoint if necessary
+        const response = await axios.get(`${baseURL}/api/universities/`, { // Adjust endpoint if necessary
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -80,7 +82,7 @@ const EditCollege = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/editcolleges/${college.id}/`,
+        `${baseURL}/api/editcolleges/${college.id}/`,
         formData,
         {
           headers: {

@@ -7,13 +7,14 @@ import { Link } from 'react-router-dom';
 
 const CollegeList = () => {
   const dispatch = useDispatch();
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const colleges = useSelector((state) => state.colleges.colleges);
   const token = useSelector((state) => state.colleges.token);
 
   useEffect(() => {
     const fetchColleges = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/colleges/', {
+        const response = await axios.get(`${baseURL}/api/colleges/`, {
           headers: {
             Authorization: `Token ${token}`, // Include the token if needed
           },

@@ -10,7 +10,8 @@ export const AddUniversity = () => {
   const [website, setWebsite] = useState('');
   const [image, setImage] = useState(null); // State for the image file
   const [error, setError] = useState('');
-
+  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); // Reset error message
@@ -26,7 +27,7 @@ export const AddUniversity = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/universities/', {
+      const response = await fetch(`${baseURL}/api/universities/`, {
         method: 'POST',
         body: formData,
       });
