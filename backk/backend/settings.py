@@ -40,9 +40,9 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'https://www.graduatorsacademy.com',
+    'https://graduatorsacademy.com',
 ]
-ALLOWED_HOSTS = ['graduatorsacademy.com','localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost']
 
 
 

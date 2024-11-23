@@ -6,7 +6,7 @@ const CampusDetails = () => {
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   // Fetch colleges for the "Top" section
   useEffect(() => {

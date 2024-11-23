@@ -9,7 +9,7 @@ const CollegeDetails = () => {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
   const [university, setUniversity] = useState(null);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

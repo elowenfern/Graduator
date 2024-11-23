@@ -5,7 +5,7 @@ const FilteredColleges = () => {
   const { category, course } = useParams();  // Extract category and course from the URL
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
   
   // Fetch colleges based on the course
   useEffect(() => {

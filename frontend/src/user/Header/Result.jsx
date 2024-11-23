@@ -7,7 +7,7 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);

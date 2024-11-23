@@ -7,7 +7,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [messageColor, setMessageColor] = useState("black");
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL ;
   
   const handleSubmit = async (e) => {
     e.preventDefault();

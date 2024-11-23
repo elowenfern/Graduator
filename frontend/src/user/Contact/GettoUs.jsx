@@ -8,7 +8,7 @@ const GettoUS = () => {
   const [college, setCollege] = useState("");
   const [message, setMessage] = useState(""); // State for message
   const [messageColor, setMessageColor] = useState("black"); // State for message color
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   
   // Function to handle form submission

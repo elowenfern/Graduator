@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const CollegesPage = () => {
   const [colleges, setColleges] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const fetchColleges = async () => {
     try {

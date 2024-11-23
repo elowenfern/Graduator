@@ -8,7 +8,7 @@ const EditCollege = () => {
   const navigate = useNavigate();
   const [facilities, setFacilities] = useState([]);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const [college, setCollege] = useState({
     name: '',

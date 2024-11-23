@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddCourse = () => {
   const [colleges, setColleges] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL ;
   const [categories, setCategories] = useState([
     { value: 'science', label: 'Science' },
     { value: 'arts', label: 'Arts' },

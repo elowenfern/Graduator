@@ -9,7 +9,7 @@ const CoursesPage = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
   const [editingCourse, setEditingCourse] = useState(null);
   const [updatedCourseData, setUpdatedCourseData] = useState({
     name: '',

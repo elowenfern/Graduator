@@ -11,7 +11,7 @@ const SectionTable = () => {
   const [validationError, setValidationError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [sectionToDelete, setSectionToDelete] = useState(null); // Track section to delete
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   // Fetch colleges and sections from the API
   const fetchCollegesAndSections = async () => {

@@ -11,7 +11,7 @@ export const AddColleges = () => {
   const [selectedUniversity, setSelectedUniversity] = useState(''); // State for selected university
   const [google_map_url, setGoogleMapUrl] = useState(''); // State for Google Map URL (changed to google_map_url)
   const [error, setError] = useState('');
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   // Fetch existing universities from the API
   useEffect(() => {

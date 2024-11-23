@@ -10,7 +10,7 @@ export const AddUniversity = () => {
   const [website, setWebsite] = useState('');
   const [image, setImage] = useState(null); // State for the image file
   const [error, setError] = useState('');
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
   
   const handleSubmit = async (e) => {
     e.preventDefault();

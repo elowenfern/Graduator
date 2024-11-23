@@ -6,7 +6,7 @@ const AllUniversity = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [universityToDelete, setUniversityToDelete] = useState(null);
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; 
+  const baseURL = process.env.REACT_APP_API_URL; 
 
   const [formData, setFormData] = useState({
     name: "",

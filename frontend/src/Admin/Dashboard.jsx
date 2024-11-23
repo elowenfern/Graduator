@@ -6,7 +6,7 @@ const DASHBOARD = () => {
   const [colleges, setColleges] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [collegeToDelete, setCollegeToDelete] = useState(null); // Track the college to be deleted
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; 
+  const baseURL = process.env.REACT_APP_API_URL; 
 
   const fetchColleges = async () => {
     try {

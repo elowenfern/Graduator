@@ -9,7 +9,7 @@ const Coursed = () => {
   const [loadingColleges, setLoadingColleges] = useState(false);
   const [error, setError] = useState(null);
   
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const navigate = useNavigate();  // Initialize navigate
 

@@ -7,7 +7,7 @@ const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL;
 
   const onSubmit = async (data) => {
     try {

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const CollegeList = () => {
   const dispatch = useDispatch();
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL ;
   const colleges = useSelector((state) => state.colleges.colleges);
   const token = useSelector((state) => state.colleges.token);
 
