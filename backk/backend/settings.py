@@ -14,6 +14,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import environ
+<<<<<<< HEAD
+=======
+
+# Initialize the environment variables
+env = environ.Env()
+environ.Env.read_env()  # This reads the .env file
+
+# Retrieve the Twilio credentials from the environment
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
+ADMIN_PHONE = os.getenv("ADMIN_PHONE")
+
+
+>>>>>>> 957b361bfc7687ffdcc6eda152bb627c51bba335
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,13 +85,13 @@ SECRET_KEY = 'django-insecure-7@s(dh_45z^yd3_o1onsfuqjw=$y-(evbg#3(393a=wa6zmeq!
 DEBUG = True
 
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://graduatorsacademy.com',
 ]
-ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost', '0.0.0.0']
 
 
 
