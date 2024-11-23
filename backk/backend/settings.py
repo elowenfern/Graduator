@@ -32,7 +32,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/path/to/your/django/logs/django.log',
+            'filename': '/home/ubuntu/Graduator/backk/logs/django.log',
         },
     },
     'loggers': {
