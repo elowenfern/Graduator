@@ -46,11 +46,15 @@ logger.info(f"Admin Phone: {settings.ADMIN_PHONE}")
 
 # Twilio credentials (replace these with your actual credentials)
 
-
-client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-twilio_number = settings.TWILIO_PHONE_NUMBER
-admin_phone = settings.ADMIN_PHONE
-
+try:
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    message = client.messages.create(
+        to=settings.ADMIN_PHONE,
+        from_=settings.TWILIO_PHONE_NUMBER,
+        body="Hello from Django!"
+    )
+except TwilioException as e:
+    print(f"Error sending message: {e}")
 
 
 @csrf_exempt
