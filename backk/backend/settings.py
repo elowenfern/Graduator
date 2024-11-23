@@ -33,7 +33,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7@s(dh_45z^yd3_o1onsfuqjw=$y-(evbg#3(393a=wa6zmeq!'
 
-DEBUG = True
+DEBUG = False
 
 
 CORS_ALLOW_ALL_ORIGINS = False
@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'amith',
         'USER':'postgres',
         'PASSWORD':'athi530',
