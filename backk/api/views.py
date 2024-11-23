@@ -30,7 +30,10 @@ from django.conf import settings
 import logging
 
 logger = logging.getLogger(__name__)
-
+logger.info(f"Twilio SID: {settings.TWILIO_ACCOUNT_SID}")
+logger.info(f"Twilio Token: {settings.TWILIO_AUTH_TOKEN}")
+logger.info(f"Twilio Phone Number: {settings.TWILIO_PHONE_NUMBER}")
+logger.info(f"Admin Phone: {settings.ADMIN_PHONE}")
 
 
 
