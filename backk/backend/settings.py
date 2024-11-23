@@ -23,7 +23,7 @@ environ.Env.read_env()  # This reads the .env file
 TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
-
+ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
