@@ -14,36 +14,27 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import environ
-<<<<<<< HEAD
-=======
-
-# Initialize the environment variables
-env = environ.Env()
-environ.Env.read_env()  # This reads the .env file
-
-# Retrieve the Twilio credentials from the environment
-TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
-ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
->>>>>>> 957b361bfc7687ffdcc6eda152bb627c51bba335
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+print("TWILIO_ACCOUNT_SID:", env("TWILIO_ACCOUNT_SID", default="NOT FOUND"))
+print("TWILIO_AUTH_TOKEN:", env("TWILIO_AUTH_TOKEN", default="NOT FOUND"))
+print("TWILIO_PHONE_NUMBER:", env("TWILIO_PHONE_NUMBER", default="NOT FOUND"))
+print("ADMIN_PHONE:", os.getenv("ADMIN_PHONE", "NOT FOUND"))
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+print("TWILIO_ACCOUNT_SID:", env("TWILIO_ACCOUNT_SID", default="NOT FOUND"))
+print("TWILIO_AUTH_TOKEN:", env("TWILIO_AUTH_TOKEN", default="NOT FOUND"))
+print("TWILIO_PHONE_NUMBER:", env("TWILIO_PHONE_NUMBER", default="NOT FOUND"))
+print("ADMIN_PHONE:", os.getenv("ADMIN_PHONE", "NOT FOUND"))
+
+# load_dotenv()
+# TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+# TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+# TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+# ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
-
-
-# Initialize the environment variables
-env = environ.Env()
-environ.Env.read_env()  # This reads the .env file
-
-# Retrieve the Twilio credentials from the environment
-TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
-ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
 
@@ -96,12 +87,6 @@ ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost', '0.0.0.0
 
 
 
-
-# load_dotenv()
-# TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-# TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-# TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
-# ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
 # Application definition
