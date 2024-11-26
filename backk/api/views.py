@@ -32,10 +32,20 @@ import environ
 
 
 
-TWILIO_ACCOUNT_SID='ACed6bbcdbf60bff5ebbbfb8fd92ea1417e'
-TWILIO_AUTH_TOKEN='76d545f3fa1e45698b9a9fc90b8a9d03'
-TWILIO_PHONE_NUMBER='whatsapp:+14155238886'
-ADMIN_PHONE='whatsapp:+917356439929'
+
+=======
+
+env = environ.Env()
+environ.Env.read_env(env_file='.env')
+
+
+# Fetch the correct credentials from the .env file
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
+ADMIN_PHONE = env('ADMIN_PHONE')
+
+>>>>>>> 28d210e (fff)
 
 
 
