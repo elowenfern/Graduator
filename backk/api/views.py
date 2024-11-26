@@ -94,8 +94,8 @@ def send_whatsapp(request):
             # Send the WhatsApp message to the admin
             message = client.messages.create(
                 body=message_body,
-                from_=settings.TWILIO_PHONE_NUMBER,
-                to=settings.ADMIN_PHONE
+                from_=TWILIO_PHONE_NUMBER,
+                to=ADMIN_PHONE
             )
 
             return JsonResponse({"message": "Message sent successfully!", "sid": message.sid}, status=200)
