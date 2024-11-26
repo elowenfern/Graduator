@@ -57,7 +57,7 @@ except TwilioRestException as e:
     print(f"Error sending message: {e}")
     print(f"Error details: {e.code} - {e.msg}")
 
-
+client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 @csrf_exempt
 def send_whatsapp(request):
     if request.method == "POST":
@@ -85,8 +85,8 @@ def send_whatsapp(request):
             # Send the WhatsApp message to the admin
             message = client.messages.create(
                 body=message_body,
-                from_=twilio_number,
-                to=admin_phone
+                from_=settings.TWILIO_PHONE_NUMBER,
+                to=settings.ADMIN_PHONE
             )
 
             return JsonResponse({"message": "Message sent successfully!", "sid": message.sid}, status=200)

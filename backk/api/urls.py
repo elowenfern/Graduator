@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     CollegeDetail, 
-    CollegeCreateView, 
+    # CollegeCreateView, 
     CollegeViewSet, 
     CollegeImageViewSet,
     CourseViewSet, 
