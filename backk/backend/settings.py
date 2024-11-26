@@ -19,13 +19,26 @@ import environ
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-dotenv_path = BASE_DIR / ".env"
+# dotenv_path = BASE_DIR / ".env"
 
-load_dotenv()
-TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
-ADMIN_PHONE = os.getenv("ADMIN_PHONE")
+# load_dotenv()
+# TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+# TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+# TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+# ADMIN_PHONE = os.getenv("ADMIN_PHONE")
+
+
+env = environ.Env()
+environ.Env.read_env(env_file='.env')  # Ensure this points to your .env file
+
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
+ADMIN_PHONE = env('ADMIN_PHONE')
+
+
+
+
 
 
 

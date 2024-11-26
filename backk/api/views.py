@@ -55,6 +55,7 @@ try:
     )
 except TwilioRestException as e:
     print(f"Error sending message: {e}")
+    print(f"Error details: {e.code} - {e.msg}")
 
 
 @csrf_exempt
