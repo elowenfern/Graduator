@@ -28,6 +28,7 @@ from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 from django.conf import settings
 import logging
+import environ
 
 logger = logging.getLogger(__name__)
 logger.info(f"Twilio SID: {settings.TWILIO_ACCOUNT_SID}")
@@ -37,6 +38,11 @@ logger.info(f"Admin Phone: {settings.ADMIN_PHONE}")
 
 
 
+
+TWILIO_ACCOUNT_SID='ACed6bbcdbf60bff5ebbbfb8fd92ea1417e'
+TWILIO_AUTH_TOKEN='76d545f3fa1e45698b9a9fc90b8a9d03'
+TWILIO_PHONE_NUMBER='whatsapp:+14155238886'
+ADMIN_PHONE='whatsapp:+917356439929'
 
 
 
@@ -57,7 +63,11 @@ except TwilioRestException as e:
     print(f"Error sending message: {e}")
     print(f"Error details: {e.code} - {e.msg}")
 
-client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
+env = environ.Env()
+environ.Env.read_env(env_file='.env') 
+client = Client(env('TWILIO_ACCOUNT_SID'), env('TWILIO_AUTH_TOKEN'))
+
 @csrf_exempt
 def send_whatsapp(request):
     if request.method == "POST":

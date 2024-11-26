@@ -27,8 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 # ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
-environ.Env.read_env(env_file='.env')
+
 env = environ.Env()
+environ.Env.read_env(env_file='.env')
   # Ensure this points to your .env file
 
 print("SID:", os.getenv("TWILIO_ACCOUNT_SID"))
