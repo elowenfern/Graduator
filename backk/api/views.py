@@ -46,20 +46,16 @@ ADMIN_PHONE='whatsapp:+917356439929'
 
 
 
-
-
-
-
 # Twilio credentials (replace these with your actual credentials)
-
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 try:
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     message = client.messages.create(
-        to=settings.ADMIN_PHONE,
-        from_=settings.TWILIO_PHONE_NUMBER,
-        body="Hello from Django!"
+        body="Hello from Django!",
+        from_=TWILIO_PHONE_NUMBER,
+        to=ADMIN_PHONE
     )
-except TwilioRestException as e:
+    print(f"Message sent successfully! SID: {message.sid}")
+except Exception as e:
     print(f"Error sending message: {e}")
     print(f"Error details: {e.code} - {e.msg}")
 
