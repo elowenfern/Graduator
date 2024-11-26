@@ -53,7 +53,7 @@ try:
         from_=settings.TWILIO_PHONE_NUMBER,
         body="Hello from Django!"
     )
-except TwilioException as e:
+except TwilioRestException as e:
     print(f"Error sending message: {e}")
 
 
