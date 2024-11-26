@@ -17,22 +17,15 @@ import environ
 
 
 
-print("TWILIO_ACCOUNT_SID:", env("TWILIO_ACCOUNT_SID", default="NOT FOUND"))
-print("TWILIO_AUTH_TOKEN:", env("TWILIO_AUTH_TOKEN", default="NOT FOUND"))
-print("TWILIO_PHONE_NUMBER:", env("TWILIO_PHONE_NUMBER", default="NOT FOUND"))
-print("ADMIN_PHONE:", os.getenv("ADMIN_PHONE", "NOT FOUND"))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-print("TWILIO_ACCOUNT_SID:", env("TWILIO_ACCOUNT_SID", default="NOT FOUND"))
-print("TWILIO_AUTH_TOKEN:", env("TWILIO_AUTH_TOKEN", default="NOT FOUND"))
-print("TWILIO_PHONE_NUMBER:", env("TWILIO_PHONE_NUMBER", default="NOT FOUND"))
-print("ADMIN_PHONE:", os.getenv("ADMIN_PHONE", "NOT FOUND"))
+dotenv_path = BASE_DIR / ".env"
 
-# load_dotenv()
-# TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-# TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-# TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
-# ADMIN_PHONE = os.getenv("ADMIN_PHONE")
+load_dotenv()
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
 
