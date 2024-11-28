@@ -89,10 +89,9 @@ DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    # 'http://localhost:3000',
     'https://graduatorsacademy.com',
 ]
-ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost']
 
 
 
@@ -133,6 +132,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'

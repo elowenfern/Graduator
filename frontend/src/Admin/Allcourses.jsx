@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import config from '../config';
+
 
 const CollegesPage = () => {
   const [colleges, setColleges] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL;
+  
 
   const fetchColleges = async () => {
     try {
-      const response = await axios.get(`${baseURL}/api/colleges/`, {
+      const response = await axios.get(`${config.API_URL}/api/colleges/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`,
         },
@@ -21,7 +23,7 @@ const CollegesPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${baseURL}/api/colleges/${id}/`, {
+      await axios.delete(`${config.API_URL}/api/colleges/${id}/`, {
         headers: {
           'Authorization': `Token YOUR_TOKEN_HERE`,
         },

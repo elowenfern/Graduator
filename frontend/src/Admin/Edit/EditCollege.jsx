@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import FacilitySelection from './FacilitySelection'; // Assuming this is a component for selecting facilities
-
+import config from '../../config';
 const EditCollege = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [facilities, setFacilities] = useState([]);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   const [college, setCollege] = useState({
     name: '',

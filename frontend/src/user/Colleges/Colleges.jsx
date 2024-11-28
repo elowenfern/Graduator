@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setAllColleges } from '../../Redux/slices/collegeSlice'; // Adjust the path based on your file structure
 import { Link } from 'react-router-dom';
-
+import config from '../../config';
 
 const CollegeList = () => {
   const dispatch = useDispatch();
-  const baseURL = process.env.REACT_APP_API_URL ;
+  const baseURL = config.API_URL;
   const colleges = useSelector((state) => state.colleges.colleges);
   const token = useSelector((state) => state.colleges.token);
 

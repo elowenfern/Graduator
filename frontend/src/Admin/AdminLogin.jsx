@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import config from '../config';
 const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const baseURL = process.env.REACT_APP_API_URL;
-
+  
+  
   const onSubmit = async (data) => {
     try {
       // Send login credentials to backend
-      const response = await axios.post(`${baseURL}/api/login/`,{
+      const response = await axios.post(`${config.API_URL}/api/login/`,{
         email: data.email,
         password: data.password
       });
+      console.log("API URL: ", process.env.REACT_APP_API_URL);
       console.log(response.data)
       // Save the tokens to localStorage
       localStorage.setItem("access_token", response.data.access);

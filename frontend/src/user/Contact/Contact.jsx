@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import config from "../../config";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -7,7 +8,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [messageColor, setMessageColor] = useState("black");
-  const baseURL = process.env.REACT_APP_API_URL ;
+  const baseURL = config.API_URL;
   
   const handleSubmit = async (e) => {
     e.preventDefault();

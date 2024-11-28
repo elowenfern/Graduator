@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
 
 const CoursesPage = () => {
   const { collegeId } = useParams(); // Get the college ID from the URL
@@ -9,7 +10,7 @@ const CoursesPage = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
   const [editingCourse, setEditingCourse] = useState(null);
   const [updatedCourseData, setUpdatedCourseData] = useState({
     name: '',

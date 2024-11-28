@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import config from '../../config';
 const AddCourse = () => {
   const [colleges, setColleges] = useState([]);
-  const baseURL = process.env.REACT_APP_API_URL ;
+  const baseURL = config.API_URL;
   const [categories, setCategories] = useState([
     { value: 'science', label: 'Science' },
     { value: 'arts', label: 'Arts' },
@@ -31,6 +31,7 @@ const AddCourse = () => {
   });
   const token = 'YOUR_TOKEN_HERE'; // Replace with your token
   const navigate = useNavigate();
+  
 
   // Fetch the list of colleges
   useEffect(() => {

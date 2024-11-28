@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import config from "../../config";
 
 const SearchResults = () => {
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);

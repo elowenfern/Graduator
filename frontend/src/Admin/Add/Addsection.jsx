@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import config from '../../config';
 const SectionTable = () => {
   const [sections, setSections] = useState([]); // Initialize as empty array
   const [colleges, setColleges] = useState([]);
@@ -11,7 +11,7 @@ const SectionTable = () => {
   const [validationError, setValidationError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [sectionToDelete, setSectionToDelete] = useState(null); // Track section to delete
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL= config.API_URL;
 
   // Fetch colleges and sections from the API
   const fetchCollegesAndSections = async () => {

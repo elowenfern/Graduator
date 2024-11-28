@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import map1 from '../../Asset/map1.jpg';
 
+
 const Photos = ({
     college,
     openModal,

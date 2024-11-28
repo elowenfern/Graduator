@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import config from '../../config';
 
 const Filteredloc = () => {
   const { location } = useParams();
@@ -7,7 +8,7 @@ const Filteredloc = () => {
   const [error, setError] = useState(null);
   
 
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   useEffect(() => {
     const fetchCollegesByLocation = async () => {

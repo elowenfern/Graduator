@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";  // Import useNavigate
+import config from "../../config";
 
 const Coursed = () => {
   const [categories, setCategories] = useState([]);
@@ -9,7 +10,7 @@ const Coursed = () => {
   const [loadingColleges, setLoadingColleges] = useState(false);
   const [error, setError] = useState(null);
   
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   const navigate = useNavigate();  // Initialize navigate
 

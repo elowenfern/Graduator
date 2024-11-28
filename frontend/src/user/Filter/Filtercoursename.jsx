@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom'; // To get route parameters and use Link for navigation
+import config from '../../config';
 
 const FilteredColleges = () => {
   const { category, course } = useParams();  // Extract category and course from the URL
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
   
   // Fetch colleges based on the course
   useEffect(() => {

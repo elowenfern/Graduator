@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import config from "../../config";
 const Location = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -8,7 +8,7 @@ const Location = () => {
   const [loadingLocations, setLoadingLocations] = useState(true);
   const [loadingColleges, setLoadingColleges] = useState(false);
   const [error, setError] = useState(null);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
   
 
   const navigate = useNavigate();

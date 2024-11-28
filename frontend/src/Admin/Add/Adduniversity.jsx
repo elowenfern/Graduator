@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import config from '../../config';
 export const AddUniversity = () => {
   const navigate = useNavigate();
   const [universityName, setUniversityName] = useState('');
@@ -10,7 +10,7 @@ export const AddUniversity = () => {
   const [website, setWebsite] = useState('');
   const [image, setImage] = useState(null); // State for the image file
   const [error, setError] = useState('');
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
   
   const handleSubmit = async (e) => {
     e.preventDefault();

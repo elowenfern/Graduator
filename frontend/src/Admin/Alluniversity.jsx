@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-
+import config from "../config";
 const AllUniversity = () => {
   const [universities, setUniversities] = useState([]);
   const [editUniversity, setEditUniversity] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [universityToDelete, setUniversityToDelete] = useState(null);
-  const baseURL = process.env.REACT_APP_API_URL; 
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -20,7 +20,7 @@ const AllUniversity = () => {
   // Fetch universities from API
   const fetchUniversities = async () => {
     try {
-      const response = await fetch(`${baseURL}/api/universities/`);
+      const response = await fetch(`${config.API_URL}/api/universities/`);
       const data = await response.json();
       setUniversities(data);
       console.log(data);
@@ -78,7 +78,7 @@ const AllUniversity = () => {
     console.log("FormData being submitted:", formDataObj);
 
     try {
-      await fetch(`${baseURL}/api/universities/${editUniversity.id}/`, {
+      await fetch(`${config.API_URL}/api/universities/${editUniversity.id}/`, {
         method: "PUT",
         body: formDataObj,
       });
@@ -93,7 +93,7 @@ const AllUniversity = () => {
   const handleConfirmDelete = async () => {
     if (universityToDelete) {
       try {
-        await fetch(`${baseURL}/api/universities/${universityToDelete.id}/`, {
+        await fetch(`${config.API_URL}/api/universities/${universityToDelete.id}/`, {
           method: "DELETE",
         });
         fetchUniversities(); // Refresh the list

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
-
+import config from '../../config';
 const CampusDetails = () => {
   const [colleges, setColleges] = useState([]);
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   // Fetch colleges for the "Top" section
   useEffect(() => {

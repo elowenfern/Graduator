@@ -5,7 +5,7 @@ import Bscmed from '../../Asset/Bestcourses/Bscmed.jpeg';
 import BscMicrobiology from '../../Asset/Bestcourses/BscMicrobiology.jpeg';
 import MscAnaesth from '../../Asset/Bestcourses/MscAnaesth.jpeg';
 import MscEcho from '../../Asset/Bestcourses/MscEcho.jpeg';
-
+import config from '../../config';
 const BestCourses = () => {
   const navigate = useNavigate();
 

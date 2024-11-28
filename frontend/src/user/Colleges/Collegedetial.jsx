@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import { Courses, Fees, Photos, Description } from './Courses';
 import Book from '../Contact/Book';
 import UniversityDetail from './UniversityDetial'; // Import UniversityDetail
-
+import config from '../../config';
 const CollegeDetails = () => {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
   const [university, setUniversity] = useState(null);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = config.API_URL;
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
