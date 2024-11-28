@@ -3,7 +3,7 @@
     <div>
     {console.log('Image URL:', university.image)} {/* Log the image URL */}
     <img
-        src={`http://localhost:8000${university.image}`}
+        src={`{baseurl}${university.image}`}
         alt={university.name}
         className="w-16 h-16 object-cover rounded"
     />

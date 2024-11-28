@@ -42,15 +42,15 @@ export const AddColleges = () => {
     formData.append('name', collegeName);
     formData.append('location', location);
     formData.append('description', description);
-    formData.append('university', selectedUniversity); // Add selected university
-    formData.append('google_map_url', google_map_url); // Add map location URL
+    formData.append('university', selectedUniversity); 
+    formData.append('google_map_url', google_map_url); 
 
     images.forEach((image) => {
-      formData.append('images', image); // Append each image to the form data
+      formData.append('images', image); 
     });
 
-    // Get the authentication token (make sure you replace it with the actual token)
-    const token = localStorage.getItem("access_token"); // Replace with your actual token
+    
+    const token = localStorage.getItem("access_token"); 
 
     try {
       // Send POST request with Authorization header
@@ -67,7 +67,7 @@ export const AddColleges = () => {
         throw new Error('Failed to add college');
       }
 
-      // Redirect to dashboard on success
+  
       navigate('/dashboard');
     } catch (err) {
       // Set error message if the submission fails

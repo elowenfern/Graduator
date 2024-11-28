@@ -86,12 +86,44 @@ SECRET_KEY = 'django-insecure-7@s(dh_45z^yd3_o1onsfuqjw=$y-(evbg#3(393a=wa6zmeq!
 DEBUG = True
 
 
+# CORS
+
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+
+# CORS METHODS
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+# CORS HEADERS
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 CORS_ALLOWED_ORIGINS = [
     'https://graduatorsacademy.com',
 ]
-ALLOWED_HOSTS = ['api.graduatorsacademy.com', '127.0.0.1', 'localhost']
+
+
+ALLOWED_HOSTS = ['api.graduatorsacademy.com']
 
 
 
