@@ -6,6 +6,8 @@ const cities = [
   { name: "Bangalore", icon: "🏙" },
   { name: "Chennai", icon: "🏯" },
   { name: "Ernakulam", icon: "🌳" },
+  { name: "Coimbatore", icon: "🏞️" }
+
 ];
 
 const BestCities = () => {

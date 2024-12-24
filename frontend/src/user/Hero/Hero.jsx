@@ -10,7 +10,7 @@ const Hero = () => (
       <div className="text-center text-white">
         <h1 className="text-5xl font-bold mb-4">Welcome to Graduators Academy</h1>
         <p className="text-xl mb-6">Unlock your potential and achieve greatness with us!</p>
-        <a href="#about" className="inline-block bg-green-500 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg">Get Started</a>
+        <a href="#about" className="inline-block bg-blue-800 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg">Get Started</a>
       </div>
     </div>
   </div>

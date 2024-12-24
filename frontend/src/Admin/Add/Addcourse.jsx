@@ -1,56 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
+
+const CATEGORY_CHOICES = [
+  { value: 'science', label: 'Science' },
+  { value: 'arts', label: 'Arts' },
+  { value: 'commerce', label: 'Commerce' },
+  { value: 'engineering', label: 'Engineering' },
+  { value: 'management', label: 'Management' },
+  { value: 'medical', label: 'Medical' },
+  { value: 'pharmacy', label: 'Pharmacy' },
+  { value: 'law', label: 'Law' },
+  { value: 'agriculture', label: 'Agriculture' },
+  { value: 'paramedical', label: 'Paramedical' },
+  { value: 'design', label: 'Design' },
+  { value: 'allied health science', label: 'Allied Health Science' },
+  { value: 'veterinary', label: 'Veterinary' },
+];
+
 const AddCourse = () => {
-  const [colleges, setColleges] = useState([]);
-  const baseURL = config.API_URL;
-  const [categories, setCategories] = useState([
-    { value: 'science', label: 'Science' },
-    { value: 'arts', label: 'Arts' },
-    { value: 'commerce', label: 'Commerce' },
-    { value: 'engineering', label: 'Engineering' },
-    { value: 'management', label: 'Management' },
-    { value: 'medical', label: 'Medical' },
-    { value: 'pharmacy', label: 'Pharmacy' },
-    { value: 'law', label: 'Law' },
-    { value: 'agriculture', label: 'Agriculture' },
-    { value: 'paramedical', label: 'Paramedical' },
-    { value: 'design', label: 'Design' },
-    { value: 'allied health science', label: 'Allied Health Science' },
-    { value: 'veterinary', label: 'Veterinary' },
-  ]);
-  const [selectedCollege, setSelectedCollege] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
   const [courseData, setCourseData] = useState({
     name: '',
     description: '',
-    fees: '',
-    semester: '', // Added semester field
-    years: '', // Added years field
+    semester: '',
+    years: '',
+    category: 'science',  // Default category
   });
-  const token = 'YOUR_TOKEN_HERE'; // Replace with your token
+  const [selectedImage, setSelectedImage] = useState(null);
+  const token = 'YOUR_TOKEN_HERE'; // Replace with actual token
   const navigate = useNavigate();
-  
+  const baseURL = config.API_URL;
 
-  // Fetch the list of colleges
-  useEffect(() => {
-    const fetchColleges = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/api/colleges/`, {
-          headers: {
-            'Authorization': `Token ${token}`,
-          },
-        });
-        setColleges(response.data); // Store fetched colleges
-      } catch (error) {
-        console.error('Error fetching colleges:', error);
-      }
-    };
-    fetchColleges();
-  }, [token]);
-
-  // Handle course input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData({
@@ -59,82 +40,46 @@ const AddCourse = () => {
     });
   };
 
-  // Handle course form submission
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newCourse = new FormData();
+    newCourse.append('name', courseData.name);
+    newCourse.append('description', courseData.description);
+    newCourse.append('semester', courseData.semester);
+    newCourse.append('years', courseData.years);
+    newCourse.append('category', courseData.category);
 
-    // Prepare course data
-    const newCourse = {
-      ...courseData,
-      college: selectedCollege, // Attach the selected college
-      category: selectedCategory, // Attach the selected category
-    };
+    if (selectedImage) {
+      newCourse.append('image', selectedImage);
+    }
 
     try {
-      // Send the course data to the backend
       const response = await axios.post(`${baseURL}/api/courses/`, newCourse, {
         headers: {
-          'Authorization': `Token ${token}`,
+          Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Course added:', response.data);
-      navigate('/allcourse'); // Redirect after success
+
+      console.log('Course successfully added:', response.data);
+      navigate('/allcourse'); // Navigate to the courses list page
     } catch (error) {
       console.error('Error adding course:', error);
     }
   };
 
   return (
-    <div className="container mx-auto p-4 max-h-[80vh] overflow-y-auto">
+    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Add New Course</h2>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {/* Select College */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="college">
-            Select College
-          </label>
-          <select
-            id="college"
-            name="college"
-            value={selectedCollege}
-            onChange={(e) => setSelectedCollege(e.target.value)}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="">-- Select College --</option>
-            {colleges.map((college) => (
-              <option key={college.id} value={college.id}>
-                {college.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Select Category */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
-            Course Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="">-- Select Category --</option>
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
+      <form onSubmit={handleSubmit}>
         {/* Course Name */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="name">
             Course Name
           </label>
           <input
@@ -143,48 +88,29 @@ const AddCourse = () => {
             name="name"
             value={courseData.name}
             onChange={handleInputChange}
-            placeholder="Course Name"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
 
         {/* Course Description */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-            Course Description
+          <label className="block text-sm font-medium text-gray-700" htmlFor="description">
+            Description
           </label>
           <textarea
             id="description"
             name="description"
             value={courseData.description}
             onChange={handleInputChange}
-            placeholder="Course Description"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
 
-        {/* Course Fees */}
+        {/* Semester */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fees">
-            Course Fees
-          </label>
-          <input
-            type="number"
-            id="fees"
-            name="fees"
-            value={courseData.fees}
-            onChange={handleInputChange}
-            placeholder="Course Fees"
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        {/* Course Semester */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="semester">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="semester">
             Semester
           </label>
           <input
@@ -193,15 +119,14 @@ const AddCourse = () => {
             name="semester"
             value={courseData.semester}
             onChange={handleInputChange}
-            placeholder="Number of Semesters"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
 
-        {/* Course Years */}
+        {/* Years */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="years">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="years">
             Years
           </label>
           <input
@@ -210,16 +135,49 @@ const AddCourse = () => {
             name="years"
             value={courseData.years}
             onChange={handleInputChange}
-            placeholder="Number of Years"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        {/* Category Dropdown */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="category">
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={courseData.category}
+            onChange={handleInputChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            required
+          >
+            {CATEGORY_CHOICES.map((choice) => (
+              <option key={choice.value} value={choice.value}>
+                {choice.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Upload Course Image */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700" htmlFor="image">
+            Upload Course Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            onChange={handleImageChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md"
           />
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
         >
           Add Course
         </button>

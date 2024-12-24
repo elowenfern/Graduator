@@ -75,7 +75,7 @@ const GettoUS = () => {
 
   return (
     <div className="p-6 sm:p-10 bg-gray-100">
-      <div className="bg-green-500 text-white rounded-lg p-6 sm:p-10 flex flex-col sm:flex-row justify-between">
+      <div className="bg-blue-800 text-white rounded-lg p-6 sm:p-10 flex flex-col sm:flex-row justify-between">
         {/* Left Side - Information */}
         <div className="w-full sm:w-1/2 mb-6 sm:mb-0">
           <h2 className="text-2xl sm:text-3xl font-semibold mb-4">Did you Choose a College?</h2>
@@ -123,7 +123,7 @@ const GettoUS = () => {
               onChange={(e) => setCollege(e.target.value)}
               className="col-span-2 p-3 rounded-lg bg-white text-gray-800 shadow-md"
             />
-            <button className="col-span-2 p-3 bg-white text-green-500 font-semibold rounded-lg shadow-md hover:bg-green-100">
+            <button className="col-span-2 p-3 bg-white text-blue-500 font-semibold rounded-lg shadow-md hover:bg-green-100">
               Submit
             </button>
           </form>

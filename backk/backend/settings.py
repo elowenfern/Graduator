@@ -28,17 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ADMIN_PHONE = os.getenv("ADMIN_PHONE")
 
 
-env = environ.Env()
-environ.Env.read_env(env_file='.env')
-  # Ensure this points to your .env file
+# env = environ.Env()
+# environ.Env.read_env(env_file='.env')
+#   # Ensure this points to your .env file
 
-print("SID:", os.getenv("TWILIO_ACCOUNT_SID"))
-print("Token:", os.getenv("TWILIO_AUTH_TOKEN"))
 
-TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
-ADMIN_PHONE = env('ADMIN_PHONE')
+
+# TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+# TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+# TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')
+# ADMIN_PHONE = env('ADMIN_PHONE')
 
 
 
@@ -57,6 +56,10 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+
+
+LOGGING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+os.makedirs(LOGGING_DIR, exist_ok=True)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -64,7 +67,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/home/ubuntu/Graduator/backk/logs/django.log',
+            'filename': os.path.join(LOGGING_DIR, 'django.log'),
         },
     },
     'loggers': {
@@ -120,12 +123,21 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = [
     'https://graduatorsacademy.com',
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
 ]
 
 
-ALLOWED_HOSTS = ['api.graduatorsacademy.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost', 
+    'api.graduatorsacademy.com',
+    ]
 
 
+# Allow larger file uploads
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10 MB
 
 
 

@@ -120,21 +120,21 @@ const AllUniversity = () => {
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Location</th>
-            <th className="py-2 px-4 border-b">Established Year</th>
-            <th className="py-2 px-4 border-b">Website</th>
-            <th className="py-2 px-4 border-b">Image</th>
-            <th className="py-2 px-4 border-b">Actions</th>
+            <th className="py-2 px-4 border-b border-r">Name</th>
+            <th className="py-2 px-4 border-b border-r">Location</th>
+            <th className="py-2 px-4 border-b border-r">Established Year</th>
+            <th className="py-2 px-4 border-b border-r">Website</th>
+            <th className="py-2 px-4 border-b border-r">Image</th>
+            <th className="py-2 px-4 border-b border-r">Actions</th>
           </tr>
         </thead>
         <tbody>
           {universities.map((university) => (
             <tr key={university.id}>
-              <td className="py-2 px-4 border-b">{university.name}</td>
-              <td className="py-2 px-4 border-b">{university.location}</td>
-              <td className="py-2 px-4 border-b">{university.established_year}</td>
-              <td className="py-2 px-4 border-b">
+              <td className="py-2 px-4 border-b border-r">{university.name}</td>
+              <td className="py-2 px-4 border-b border-r">{university.location}</td>
+              <td className="py-2 px-4 border-b border-r">{university.established_year}</td>
+              <td className="py-2 px-4 border-b border-r">
                 {university.website ? (
                   <a
                     href={university.website}
@@ -148,7 +148,7 @@ const AllUniversity = () => {
                   "N/A"
                 )}
               </td>
-              <td className="py-2 px-4 border-b">
+              <td className="py-2 px-4 border-b border-r">
                 {university.image ? (
                     <div>
                     {console.log('Image URL:', university.image)} {/* Log the image URL */}
@@ -162,15 +162,6 @@ const AllUniversity = () => {
                     "No Image"
                 )}
                 </td>
-
-
-
-
-
-
-
-
-
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => handleEditClick(university)}

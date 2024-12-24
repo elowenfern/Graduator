@@ -28,7 +28,7 @@ const Header = () => {
   };
 
   return (
-    <header className="p-5 bg-green-500 text-white">
+    <header className="p-5 bg-blue-800 text-white">
       <div className="flex items-center justify-between flex-wrap">
         {/* Logo/Icon */}
         <div className="flex items-center mb-4 sm:mb-0">
@@ -50,10 +50,11 @@ const Header = () => {
               onChange={(e) => setQuery(e.target.value)} // Update query as user types
               onKeyPress={handleKeyPress} // Trigger search on Enter key
               placeholder="Search for colleges..."
-              className="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent transition duration-300 ease-in-out shadow-md"
+              className="w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition duration-300 ease-in-out shadow-md"
+
             />
             <FaSearch
-              className="absolute top-2 right-2 text-gray-600 cursor-pointer hover:text-green-500 transition-colors duration-200"
+              className="absolute top-2 right-2 text-gray-600 cursor-pointer hover:text-blue-500 transition-colors duration-200"
               onClick={handleSearchAndFilter} // Trigger search on icon click
             />
           </div>
@@ -68,6 +69,9 @@ const Header = () => {
             </Link>
             <Link to="/courses" className="hover:text-gray-200">
               Courses
+            </Link>
+            <Link to="/blog" className="hover:text-gray-200">
+              Blogs
             </Link>
             <Link to="/contact" className="hover:text-gray-200">
               Contact Us
@@ -108,6 +112,9 @@ const Header = () => {
           <Link to="/courses" className="text-white hover:text-gray-200">
             Courses
           </Link>
+          <Link to="/blog" className="hover:text-gray-200">
+              Blogs
+            </Link>
           <Link to="/contact" className="text-white hover:text-gray-200">
             Contact Us
           </Link>

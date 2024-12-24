@@ -10,6 +10,7 @@ const CollegeList = () => {
   const baseURL = config.API_URL;
   const colleges = useSelector((state) => state.colleges.colleges);
   const token = useSelector((state) => state.colleges.token);
+  
 
   useEffect(() => {
     const fetchColleges = async () => {
@@ -44,11 +45,10 @@ const CollegeList = () => {
             )}
             {/* Display full college name */}
             <h3 className="text-xl font-semibold mt-2">{college.name}</h3>
-            <p className="mt-1 text-gray-600"></p>
             <p className="mt-1 text-gray-600">Location: {college.location}</p>
-            <Link to={`/colleges/${college.id}`}>
+            <Link to={`/colleges/${college.slug}`}> {/* Use slug instead of id */}
               <button
-                className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mt-4"
+                className="bg-blue-800 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg mt-4"
               >
                 Get Admission
               </button>

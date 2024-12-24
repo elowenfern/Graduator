@@ -2,33 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// import config from '../config';
+import config from '../config';
+
+
 const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const baseurl = process.env.REACT_APP_API_URL
+  const baseURL = config.API_URL;
   
-  useEffect(()=>{
-    console.log('my url',baseurl)
-  })
+  
   const onSubmit = async (data) => {
     try {
-      // Send login credentials to backend
-      const response = await axios.post(`https://api.graduatorsacademy.com/api/login/`,{
+      const response = await axios.post(`${baseURL}/api/login/`,{
         email: data.email,
         password: data.password
       });
       
-      console.log(response.data)
-      // Save the tokens to localStorage
+      // console.log(response.data)
+      
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
-      // Redirect to dashboard on successful login
       navigate("/dashboard");
     } catch (err) {
-      // Set error message if login fails
       setError("Invalid username or password");
     }
   };

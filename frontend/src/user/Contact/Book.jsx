@@ -1,4 +1,5 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
+import axios from 'axios';  // Import axios
 import config from "../../config";
 
 const Book = () => {
@@ -7,23 +8,43 @@ const Book = () => {
   const [phone, setPhone] = useState("");
   const [course, setCourse] = useState("");
   const [college, setCollege] = useState("");
-  const [message, setMessage] = useState(""); // State for message
-  const [messageColor, setMessageColor] = useState("black"); // State for message color
+  const [message, setMessage] = useState(""); 
+  const [messageColor, setMessageColor] = useState("black"); 
   const baseURL = config.API_URL;
 
- 
+  // New sendInquiry function using axios
+  const sendInquiry = async (inquiryData) => {
+    try {
+      const response = await axios.post(`${baseURL}/api/send-whatsapp/`, inquiryData);
+      setMessage(response.data.message);
+      setMessageColor("green");
+
+      // Reset form on success
+      setName("");
+      setEmail("");
+      setPhone("");
+      setCourse("");
+      setCollege("");
+    } catch (error) {
+      if (error.response && error.response.data) {
+        setMessage(error.response.data.error);
+      } else {
+        setMessage("Unexpected error occurred.");
+      }
+      setMessageColor("red");
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation for fields
     if (!name || !email || !phone || !course || !college) {
       setMessage("Please fill out all the fields.");
       setMessageColor("red");
       return;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setMessage("Please enter a valid email address.");
@@ -31,15 +52,13 @@ const Book = () => {
       return;
     }
 
-    // Phone number validation (assumes country code and 10-digit number for example, "+91" for India)
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(phone)) {
-      setMessage("Please enter a valid phone number in the 10 digit");
+      setMessage("Please enter a valid 10-digit phone number.");
       setMessageColor("red");
       return;
     }
 
-    // Prepare the data to send to the backend
     const formData = {
       name,
       email,
@@ -48,46 +67,16 @@ const Book = () => {
       college,
     };
 
-    // Send form data to the backend to trigger WhatsApp message to admin
-    try {
-      const response = await fetch(`${baseURL}/api/send-whatsapp/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message); // Set success message
-        setMessageColor("green"); // Set color to green for success
-
-        // Reset form fields after successful submission
-        setName("");
-        setEmail("");
-        setPhone("");
-        setCourse("");
-        setCollege("");
-      } else {
-        setMessage(data.error); // Set error message
-        setMessageColor("red"); // Set color to red for error
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      setMessage("An unexpected error occurred.");
-      setMessageColor("red");
-    }
+    // Call sendInquiry instead of fetch
+    await sendInquiry(formData);
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 shadow-lg rounded-lg">
-      {/* Header Section */}
       <h2 className="text-3xl font-semibold text-center text-gray-800 mb-8">
         BOOK ADMISSION
       </h2>
 
-      {/* Form Section */}
       <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -96,14 +85,14 @@ const Book = () => {
               placeholder="Enter Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
               type="email"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-3 border border-gray-300 rounded-lg shadow-sm"
             />
           </div>
 
@@ -113,14 +102,14 @@ const Book = () => {
               placeholder="Phone (XXXXXXXXXX)"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
               type="text"
               placeholder="Course Name"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
-              className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-3 border border-gray-300 rounded-lg shadow-sm"
             />
           </div>
 
@@ -129,20 +118,18 @@ const Book = () => {
             placeholder="College Name"
             value={college}
             onChange={(e) => setCollege(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
           />
 
           <button
             type="submit"
-            className="w-full p-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200"
+            className="w-full p-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-500 transition"
           >
             Submit
           </button>
         </form>
 
-        {/* Message Section */}
         <div
-          id="messageBox"
           style={{ color: messageColor, marginTop: "15px" }}
           className="text-center text-lg"
         >

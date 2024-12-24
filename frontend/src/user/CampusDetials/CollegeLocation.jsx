@@ -62,7 +62,7 @@ const Location = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
-      <nav className="bg-green-700 p-4">
+      <nav className="bg-blue-800 p-4">
         <ul className="flex flex-wrap justify-center space-x-4 sm:space-x-8">
           {locations.map((location) => (
             <li key={location.key} className="mb-2 sm:mb-0">

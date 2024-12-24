@@ -59,18 +59,24 @@ import {
     //   path: '/addfacility',
     //   icon: <HiOutlineViewGrid />
     // },
-    // {
-    //   key: 'customers',
-    //   label: 'Customers',
-    //   path: '/customers',
-    //   icon: <HiOutlineUsers />
-    // },
-    // {
-    //   key: 'transactions',
-    //   label: 'Transactions',
-    //   path: '/transactions',
-    //   icon: <HiOutlineDocumentText />
-    // },
+    {
+      key: 'Add course to college',
+      label: 'Add course to college',
+      path: '/courseto',
+      icon: <HiOutlineUsers />
+    },
+    {
+      key: 'Add Blog',
+      label: 'Add Blog',
+      path: '/addblog',
+      icon: <HiOutlineDocumentText />
+    },
+    {
+      key: 'Blog',
+      label: ' Blog',
+      path: '/editblog',
+      icon: <HiOutlineDocumentText />
+    },
     // {
     //   key: 'messages',
     //   label: 'Messages',

@@ -1,82 +1,72 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import config from "../../config";
 
 const Coursed = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [colleges, setColleges] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingColleges, setLoadingColleges] = useState(false);
+  const [loadingCourses, setLoadingCourses] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const baseURL = config.API_URL;
+  const navigate = useNavigate();
 
-  const navigate = useNavigate();  // Initialize navigate
-
-  // Fetch categories and set the initial selected category
   useEffect(() => {
     fetch(`${baseURL}/api/course-categories/`)
       .then((response) => response.json())
       .then((data) => {
+        console.log('Categories:', data);
         setCategories(data);
         if (data.length > 0) {
-          setSelectedCategory(data[0].key); // Set the initial category
+          setSelectedCategory(data[0].key);
         }
         setLoadingCategories(false);
       })
       .catch((error) => {
         console.error("Error fetching course categories:", error);
-        setError("Failed to load course categories.");
+        setError("Failed to load categories.");
         setLoadingCategories(false);
       });
   }, []);
 
-  // Fetch colleges based on the selected category
   useEffect(() => {
     if (selectedCategory) {
-      setLoadingColleges(true);
+      setLoadingCourses(true);
       setError(null);
-      fetch(`${baseURL}/api/course_colleges/?category=${selectedCategory}`)
+      fetch(`${baseURL}/api/course_category/?category=${selectedCategory}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Response data:", data); // Log the API response
-          if (Array.isArray(data)) {
-            setColleges(data);
-          } else {
-            console.error("Expected array of colleges but got:", data);
-            setColleges([]);
-          }
-          setLoadingColleges(false);
+          setCourses(data);
+          setLoadingCourses(false);
         })
         .catch((error) => {
-          console.error("Error fetching colleges:", error);
-          setError("Failed to load colleges.");
-          setLoadingColleges(false);
+          console.error("Error fetching courses:", error);
+          setError("Failed to load courses.");
+          setLoadingCourses(false);
         });
     }
   }, [selectedCategory]);
 
-  // Handle card click to navigate to CollegeDetails page
-  const handleCollegeClick = (collegeId) => {
-    navigate(`/colleges/${collegeId}`);  // Navigate to CollegeDetails with college ID
+  const handleCourseClick = (course) => {
+    navigate(`/course-details/${encodeURIComponent(course.name)}`);
   };
 
   if (loadingCategories) {
     return <div className="text-center text-gray-600">Loading categories...</div>;
   }
-
+  
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
-      <nav className="bg-green-700 p-4">
+      <nav className="bg-blue-700 p-4">
         <ul className="flex flex-wrap justify-center space-x-4 sm:space-x-8">
           {categories.map((category) => (
             <li key={category.key} className="mb-2 sm:mb-0">
               <button
                 onClick={() => setSelectedCategory(category.key)}
                 className={`text-white font-semibold px-4 py-2 rounded ${
-                  selectedCategory === category.key ? "bg-green-500" : "hover:text-blue-200"
+                  selectedCategory === category.key ? "bg-blue-500" : "hover:bg-blue-400"
                 }`}
               >
                 {category.value}
@@ -86,39 +76,38 @@ const Coursed = () => {
         </ul>
       </nav>
 
-      {/* Loading colleges */}
-      {loadingColleges && <div className="text-center text-gray-600">Loading colleges...</div>}
+      {loadingCourses && <div className="text-center text-gray-600 mt-4">Loading courses...</div>}
 
-      {/* Error message */}
-      {error && <div className="text-center text-red-600">{error}</div>}
+      {error && <div className="text-center text-red-600 mt-4">{error}</div>}
 
-      {/* College List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
-        {colleges.map((college) => (
-          <div
-            key={college.id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
-            onClick={() => handleCollegeClick(college.id)}  // Add onClick event to navigate
-          >
-            <img
-              src={`${baseURL}${college.image}`}
-              alt={college.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{college.name}</h3>
-              <p className="text-gray-600">{college.location}</p>
-            </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      {courses.map((course) => {
+      
+      
+      return (
+        <div
+          key={course.id}
+          className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
+          onClick={() => handleCourseClick(course)}
+        >
+          <div className="h-48 bg-gray-200 flex items-center justify-center">
+            {course.image ? (
+              <img
+                src={`${baseURL}${course.image}`}
+                alt={course.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-gray-600">No Image</span>
+            )}
           </div>
-        ))}
-      </div>
-
-      {/* No colleges message */}
-      {colleges.length === 0 && !loadingColleges && (
-        <div className="text-center text-gray-600 mt-8">
-          <p>No colleges available for the selected category.</p>
+          <div className="p-2 text-center">
+            <p className="text-sm font-semibold text-gray-700">{course.name}</p>
+          </div>
         </div>
-      )}
+      );
+    })}
+    </div>
     </div>
   );
 };
