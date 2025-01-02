@@ -38,7 +38,7 @@ export const AddUniversity = () => {
 
       const universityData = await response.json();
       // After success, redirect to the university list or another page
-      navigate('/dashboard'); // Change to the desired redirect path
+      navigate('/university'); // Change to the desired redirect path
     } catch (err) {
       setError('Error adding university');
     }

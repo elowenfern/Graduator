@@ -8,6 +8,7 @@ const EditCollegeDetail = () => {
   const [college, setCollege] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
   const [editedCourse, setEditedCourse] = useState({});
   const baseURL = config.API_URL;
   const token = 'YOUR_TOKEN_HERE';
@@ -75,6 +76,35 @@ const EditCollegeDetail = () => {
     }
   };
 
+  const openDeleteModal = (course) => {
+    setSelectedCourse(course);
+    setIsDeleteModalOpen(true); // Open the delete confirmation modal
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedCourse(null);
+  };
+
+  const deleteCourse = async () => {
+    try {
+      await axios.delete(`${baseURL}/api/college_courses/${selectedCourse.id}/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      setCollege((prevCollege) => ({
+        ...prevCollege,
+        college_courses: prevCollege.college_courses.filter(
+          (course) => course.id !== selectedCourse.id
+        ),
+      }));
+      closeDeleteModal(); // Close delete modal after deletion
+    } catch (error) {
+      console.error('Error deleting course:', error.response || error.message);
+    }
+  };
+
   return (
     <div className="p-8">
       {college ? (
@@ -106,6 +136,12 @@ const EditCollegeDetail = () => {
                         >
                           Edit
                         </button>
+                        <button
+                          onClick={() => openDeleteModal(course)} // Open delete modal
+                          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -119,12 +155,6 @@ const EditCollegeDetail = () => {
               </tbody>
             </table>
           </div>
-          {/* <button
-            onClick={handleEdit}
-            className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 mt-4"
-          >
-            Edit College Details
-          </button> */}
         </>
       ) : (
         <p>Loading college details...</p>
@@ -167,6 +197,29 @@ const EditCollegeDetail = () => {
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Are you sure you want to delete this course?</h2>
+            <div className="flex justify-end">
+              <button
+                onClick={closeDeleteModal}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={deleteCourse}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
               </button>
             </div>
           </div>

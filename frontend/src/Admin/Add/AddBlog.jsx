@@ -23,13 +23,16 @@ const AddBlog = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const blogData = {
       title,
       description,
       colleges: selectedColleges,
     };
-
+  
+    // Log the blog data to ensure it's correct
+    console.log("Submitting blog data:", blogData);
+  
     fetch(`${config.API_URL}/api/blogs/`, {
       method: "POST",
       headers: {
@@ -38,13 +41,18 @@ const AddBlog = () => {
       body: JSON.stringify(blogData),
     })
       .then((response) => response.json())
-      .then(() => {
+      .then((data) => {
+        console.log("Response data:", data); // Log the response data from the backend
         alert("Blog added successfully!");
         setTitle("");
         setDescription("");
         setSelectedColleges([]);
+      })
+      .catch((error) => {
+        console.error("Error adding blog:", error); // Log any errors
       });
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">

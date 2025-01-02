@@ -33,6 +33,7 @@ from django.conf import settings
 import logging
 import environ
 import os
+from django.db import transaction
 
 
 
@@ -148,7 +149,7 @@ class LoginView(APIView):
         password = request.data.get('password')
         try:
             user = User.objects.get(email=email)
-            # print(user.username, password)
+
 
             user = authenticate(username=user.username, password=password)
 
@@ -274,11 +275,14 @@ class CollegeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='by-ids')
     def get_colleges_by_ids(self, request):
         ids = request.query_params.get('ids', '').split(',')
-        print('Received IDs:', ids)
+        ids = [int(id) for id in ids if id.isdigit()]
+        # print('Received IDs:', ids)
         colleges = College.objects.filter(id__in=ids)
-        print('Filtered Colleges:', colleges)
+        # print('Filtered Colleges:', colleges)
         serializer = CollegeSerializer(colleges, many=True)
         return Response(serializer.data)
+    
+
     
     def list(self, request, *args, **kwargs):
         blog_id = request.query_params.get('blog_id', None)
@@ -447,7 +451,21 @@ class AddCourseToCollegeView(APIView):
             serializer = CollegeCourseSerializer(college_course)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def delete(self, request, pk, format=None):
+        try:
+            # with transaction.atomic():
+            # print(f"Received DELETE request for course with id: {id}")
+            college_course = CollegeCourse.objects.get(pk=pk)
+               
+            college_course.delete()
+            return Response({"detail": "Course deleted successfully."}, status=status.HTTP_200_OK)
 
+        except CollegeCourse.DoesNotExist:
+            return Response({"detail": "Course not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+           
+            print(f"Error deleting course with id {id}: {str(e)}")
+            return Response({"detail": "An error occurred while deleting the course."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UniversityViewSet(viewsets.ModelViewSet):
@@ -468,47 +486,37 @@ class SectionViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         college_id = request.data.get('college_id')
         course_id = request.data.get('course_id')
+        
         if not college_id and not course_id:
             return Response(
                 {"error": "You must provide either 'college_id' or 'course_id' to create a section"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Validate the provided college_id if it exists
         college = None
+        course = None
+
         if college_id:
             try:
                 college = College.objects.get(id=college_id)
             except College.DoesNotExist:
-                return Response(
-                    {"error": "Invalid 'college_id' provided"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return Response({"error": "Invalid 'college_id' provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate the provided course_id if it exists
-        course = None
         if course_id:
             try:
                 course = Course.objects.get(id=course_id)
             except Course.DoesNotExist:
-                return Response(
-                    {"error": "Invalid 'course_id' provided"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return Response({"error": "Invalid 'course_id' provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        section_data = {
-            "name": request.data.get("name"),
-            "college": college.id if college else None,
-            "course": course.id if course else None,
-        }
+        # Directly create the section using the actual objects
+        section = Section.objects.create(
+            name=request.data.get("name"),
+            college=college,
+            course=course
+        )
 
-        # Serialize and save
-        serializer = self.get_serializer(data=section_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(section)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
         college_id = request.query_params.get('college_id')
@@ -652,6 +660,15 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
+    def create(self, request, *args, **kwargs):
+        print("Incoming request data:", request.data)
+        response = super().create(request, *args, **kwargs)
+        print("Response data:", response.data)
+        return response
+    def destroy(self, request, *args, **kwargs):
+        blog = self.get_object()
+        blog.delete()  # Delete the blog instance
+        return Response(status=status.HTTP_204_NO_CONTENT)
 # views increment
 @api_view(['POST'])
 def increment_course_view(request, pk):

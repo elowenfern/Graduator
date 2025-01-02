@@ -21,13 +21,13 @@ const SectionTable = () => {
   const fetchData = async () => {
     try {
       const collegesResponse = await axios.get(`${baseURL}/api/colleges/`);
-      console.log('Colleges:', collegesResponse.data);
+      // console.log('Colleges:', collegesResponse.data);
   
       const coursesResponse = await axios.get(`${baseURL}/api/courses/`);
-      console.log('Courses:', coursesResponse.data);
+      // console.log('Courses:', coursesResponse.data);
   
       const sectionsResponse = await axios.get(`${baseURL}/api/sections/`);
-      console.log('Sections:', sectionsResponse.data);
+      // console.log('Sections:', sectionsResponse.data);
   
       setColleges(collegesResponse.data);
       setCourses(coursesResponse.data);
@@ -63,10 +63,16 @@ const SectionTable = () => {
   
     const payload = {
       name: newSectionName,
-      college_id: selectedCollege ? selectedCollege : null,
-      course_id: selectedCourse || null,
+      course_id: selectedCourse ? Number(selectedCourse.id || selectedCourse) : null,
     };
   
+    // Only add college_id if a college is selected
+    if (selectedCollege) {
+      payload.college_id = selectedCollege;
+    }
+
+    console.log('Selected College:', selectedCollege);
+    console.log('Selected Course:', selectedCourse);
     console.log('Payload:', payload);
   
     try {

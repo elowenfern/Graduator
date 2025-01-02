@@ -9,6 +9,7 @@ const DisplayBlogs = () => {
   const [error, setError] = useState("");
   const [editingBlog, setEditingBlog] = useState(null);
   const [formData, setFormData] = useState({ title: "", description: "", colleges: [] });
+  const [confirmDelete, setConfirmDelete] = useState(null); // State to handle delete confirmation modal
 
   useEffect(() => {
     fetch(`${config.API_URL}/api/blogs/`)
@@ -17,12 +18,7 @@ const DisplayBlogs = () => {
         setBlogs(data);
         setLoading(false);
 
-        const collegeIds = data.flatMap((blog) =>
-          blog.colleges.map((college) => college.id)
-        );
-        console.log('Extracted College IDs:', collegeIds);
-        console.log('Blogs:', data);
-        console.log('Colleges in Blogs:', data.map(blog => blog.colleges));
+        const collegeIds = data.flatMap((blog) => blog.colleges);
         fetch(`${config.API_URL}/api/colleges/by-ids?ids=${collegeIds.join(",")}`)
           .then((response) => response.json())
           .then((collegeData) => {
@@ -37,7 +33,8 @@ const DisplayBlogs = () => {
           .then((response) => response.json())
           .then((data) => setAllColleges(data));
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Error fetching blogs:", err); // Log full error for debugging
         setError("Failed to fetch blogs. Please try again later.");
         setLoading(false);
       });
@@ -45,10 +42,10 @@ const DisplayBlogs = () => {
 
   const handleEditClick = (blog) => {
     setEditingBlog(blog);
-    setFormData({ 
-      title: blog.title, 
-      description: blog.description, 
-      colleges: blog.colleges 
+    setFormData({
+      title: blog.title,
+      description: blog.description,
+      colleges: blog.colleges,
     });
   };
 
@@ -81,9 +78,37 @@ const DisplayBlogs = () => {
         );
         setEditingBlog(null);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Error updating blog:", err); // Log full error
         alert("Failed to update blog. Please try again.");
       });
+  };
+
+  const handleDelete = (id) => {
+    fetch(`${config.API_URL}/api/blogs/${id}/`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          setBlogs(blogs.filter((blog) => blog.id !== id)); // Remove the blog from the state
+          setConfirmDelete(null); // Close the confirmation modal
+        } else {
+          throw new Error("Failed to delete blog.");
+        }
+      })
+      .catch((err) => {
+        console.error("Error deleting blog:", err); // Log full error
+        alert("Failed to delete blog. Please try again.");
+        setConfirmDelete(null); // Close the modal on error
+      });
+  };
+
+  const handleConfirmDelete = (id) => {
+    setConfirmDelete(id); // Set the blog id to be deleted
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDelete(null); // Close the confirmation modal without deleting
   };
 
   if (loading) return <div>Loading...</div>;
@@ -105,20 +130,19 @@ const DisplayBlogs = () => {
               <div className="mt-2">
                 <strong>Colleges:</strong>
                 <ul>
-                    {blog.colleges.map((college) => {
-                      const collegeDetails = colleges[college.id]; // Use college.id to fetch the details
-                      return collegeDetails ? (
-                        <li key={college.id} className="text-sm text-gray-700">
-                          {collegeDetails.name}
-                        </li>
-                      ) : (
-                        <li key={college.id} className="text-sm text-gray-700">
-                          Loading college...
-                        </li>
-                      );
-                    })}
-                  </ul>
-
+                  {blog.colleges.map((collegeId) => {
+                    const collegeDetails = colleges[collegeId];
+                    return collegeDetails ? (
+                      <li key={collegeId} className="text-sm text-gray-700">
+                        {collegeDetails.name}
+                      </li>
+                    ) : (
+                      <li key={collegeId} className="text-sm text-gray-700">
+                        Loading college...
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
               <button
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
@@ -126,9 +150,38 @@ const DisplayBlogs = () => {
               >
                 Edit
               </button>
+              <button
+                className="mt-4 ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+                onClick={() => handleConfirmDelete(blog.id)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Are you sure you want to delete this blog?</h2>
+            <div className="flex justify-end space-x-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+                onClick={() => handleDelete(confirmDelete)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {editingBlog && (
@@ -176,7 +229,7 @@ const DisplayBlogs = () => {
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                 onClick={handleSave}
               >
                 Save

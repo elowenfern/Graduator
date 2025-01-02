@@ -114,8 +114,10 @@ class SectionSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'college', 'college_name', 'course', 'course_name']
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        if instance.course:
+            representation['course_name'] = instance.course.name
         if self.context['request'].method == 'POST':
-            representation.pop('course', None)  # Exclude course during POST
+            representation.pop('course', None)
         return representation
 
 class UniversitySerializer(serializers.ModelSerializer):
@@ -124,7 +126,7 @@ class UniversitySerializer(serializers.ModelSerializer):
         fields =  '__all__'
 
 class BlogSerializer(serializers.ModelSerializer):
-    colleges = CollegeSerializer(many=True)
+    colleges = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), many=True)
     class Meta:
         model = Blog
         fields =  '__all__'
