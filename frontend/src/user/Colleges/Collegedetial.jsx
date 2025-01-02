@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Courses, Fees, Description, Photos } from './Courses';
+import { Courses, Fees, Description, Photos ,HighlightTable} from './Courses';
 import Book from '../Contact/Book';
 import UniversityDetail from './UniversityDetial';
 import config from '../../config';
@@ -85,7 +85,7 @@ const CollegeDetails = () => {
         className="relative"
       >
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="absolute inset-0 flex items-center justify-between px-8">
+        <div className="absolute inset-0 flex items-end justify-between px-8 pb-6 ">
           <div className="flex items-center space-x-4">
             <div className="w-20 h-20 bg-white rounded-full overflow-hidden shadow-md">
               <img
@@ -111,6 +111,13 @@ const CollegeDetails = () => {
                 onClick={() => setSelectedSection('photos')}
               >
                 Photos
+              </a>
+              <a
+                href="#highlighttable"
+                className="hover:text-blue-800 cursor-pointer"
+                onClick={() => setSelectedSection('highlighttable')}
+              >
+                Highlights
               </a>
               <a
                 href="#description"
@@ -156,6 +163,9 @@ const CollegeDetails = () => {
               <UniversityDetail university={university || {}} />
               <Fees college={college} />
               <Courses college={college} />
+            </div>
+            <div className={`${selectedSection === 'highlighttable' ? 'block' : 'hidden'}`}>
+              <HighlightTable college={college} />
             </div>
             <div className={`${selectedSection === 'description' ? 'block' : 'hidden'}`}>
               <Description college={college} />

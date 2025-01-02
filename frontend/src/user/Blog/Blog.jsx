@@ -55,9 +55,11 @@ function BlogDetails({ blog, onBack }) {
     const navigate = useNavigate();
   
     useEffect(() => {
+      console.log('Blog Colleges:', blog.colleges);
       if (blog.colleges && blog.colleges.length > 0) {
-        axios.get(`${config.API_URL}/api/colleges?ids=${blog.colleges.join(',')}`)
+        axios.get(`${config.API_URL}/api/colleges?blog_id=${blog.id}`)
           .then(response => {
+            console.log('API Response:', response.data);
             setColleges(response.data);
           })
           .catch(error => console.error('Error fetching colleges:', error));
@@ -94,7 +96,7 @@ function BlogDetails({ blog, onBack }) {
               >
                 <div className="relative">
                   <img 
-                    src={college.images[0]?.image || '/placeholder.jpg'} 
+                    src={`${config.API_URL}${college.images[0]?.image}` || '/placeholder.jpg'} 
                     alt={college.name} 
                     className="w-full h-48 object-cover group-hover:blur-sm transition-all duration-300"
                   />

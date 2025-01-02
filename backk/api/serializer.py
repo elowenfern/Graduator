@@ -44,7 +44,7 @@ class CollegeSerializer(serializers.ModelSerializer):
         model = College
         fields = '__all__'
     def get_courses(self, obj):
-        # Fetch courses through the CollegeCourse model
+       
         college_courses = CollegeCourse.objects.filter(college=obj)
         return CourseSerializer([cc.course for cc in college_courses], many=True).data
 

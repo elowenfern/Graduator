@@ -17,7 +17,12 @@ const DisplayBlogs = () => {
         setBlogs(data);
         setLoading(false);
 
-        const collegeIds = data.flatMap((blog) => blog.colleges);
+        const collegeIds = data.flatMap((blog) =>
+          blog.colleges.map((college) => college.id)
+        );
+        console.log('Extracted College IDs:', collegeIds);
+        console.log('Blogs:', data);
+        console.log('Colleges in Blogs:', data.map(blog => blog.colleges));
         fetch(`${config.API_URL}/api/colleges/by-ids?ids=${collegeIds.join(",")}`)
           .then((response) => response.json())
           .then((collegeData) => {
@@ -100,19 +105,20 @@ const DisplayBlogs = () => {
               <div className="mt-2">
                 <strong>Colleges:</strong>
                 <ul>
-                  {blog.colleges.map((collegeId) => {
-                    const college = colleges[collegeId];
-                    return college ? (
-                      <li key={college.id} className="text-sm text-gray-700">
-                        {college.name}
-                      </li>
-                    ) : (
-                      <li key={collegeId} className="text-sm text-gray-700">
-                        Loading college...
-                      </li>
-                    );
-                  })}
-                </ul>
+                    {blog.colleges.map((college) => {
+                      const collegeDetails = colleges[college.id]; // Use college.id to fetch the details
+                      return collegeDetails ? (
+                        <li key={college.id} className="text-sm text-gray-700">
+                          {collegeDetails.name}
+                        </li>
+                      ) : (
+                        <li key={college.id} className="text-sm text-gray-700">
+                          Loading college...
+                        </li>
+                      );
+                    })}
+                  </ul>
+
               </div>
               <button
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"

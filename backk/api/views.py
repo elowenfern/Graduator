@@ -273,30 +273,87 @@ class CollegeViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], url_path='by-ids')
     def get_colleges_by_ids(self, request):
-        # Get the list of ids from the query parameters
         ids = request.query_params.get('ids', '').split(',')
+        print('Received IDs:', ids)
         colleges = College.objects.filter(id__in=ids)
+        print('Filtered Colleges:', colleges)
         serializer = CollegeSerializer(colleges, many=True)
         return Response(serializer.data)
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search_query = self.request.query_params.get('college_name', None)
-        course_name = self.request.query_params.get('course_name', None)
+    
+    def list(self, request, *args, **kwargs):
+        blog_id = request.query_params.get('blog_id', None)
+        search_query = request.query_params.get('search_query', None)
+        # print('Search Query:', search_query)
+
+        if blog_id:
+            try:
+                blog = Blog.objects.get(id=blog_id)
+                colleges = blog.colleges.all()
+                serializer = CollegeSerializer(colleges, many=True)
+                return Response(serializer.data)
+            except Blog.DoesNotExist:
+                return Response({"message": "Blog not found"}, status=status.HTTP_404_NOT_FOUND)
+            
 
         if search_query:
-            filters = (
-                Q(name__icontains=search_query) |
-                Q(courses__name__icontains=search_query) |
-                Q(location__icontains=search_query) |
-                Q(university__name__icontains=search_query) |
-                Q(courses__category__icontains=search_query)
-            )
-            queryset = queryset.filter(filters).distinct()
-        if course_name:
-            queryset = queryset.filter(college_courses__course__name__icontains=course_name).distinct()
-            print(f"Filtered queryset: {queryset}")
-        return queryset
-    
+            colleges = College.objects.filter(name__icontains=search_query)
+            print('Found Colleges:', colleges)
+            if colleges.exists():
+                college_data = []
+                for college in colleges:
+                    images = college.images.all()
+                    image_urls = [request.build_absolute_uri(img.image.url) for img in images]
+                    college_data.append({
+                        "id": college.id,
+                        "name": college.name,
+                        "location": college.location,
+                        "slug": college.slug,
+                        "images": image_urls if image_urls else [request.build_absolute_uri('/media/default-image.jpg')]
+                    })
+                
+                return Response({"colleges": college_data})
+        
+
+            # 2. Search Courses
+            courses = Course.objects.filter(name__icontains=search_query)
+           
+
+            if courses.exists():
+                courses_data = []
+                for course in courses:
+                    college_courses = CollegeCourse.objects.filter(course=course)
+                    
+
+                    for college_course in college_courses:
+                        try:
+                            image_url = request.build_absolute_uri(course.image.url)
+                        except Exception as e:
+                            image_url = request.build_absolute_uri('/media/default-image.jpg')
+
+                        courses_data.append({
+                            "id": course.id,
+                            "name": course.name,
+                            "image": image_url,
+                            "college_name": college_course.college.name
+                        })
+                
+                return Response({"courses": courses_data})
+
+            # 3. Search Universities
+            universities = University.objects.filter(name__icontains=search_query)
+
+            if universities.exists():
+                return Response({
+                    "universities": list(universities.values(
+                        "id", "name", "description", "website", "established_year"
+                    ))
+                })
+        else:
+            colleges = College.objects.all()
+            serializer = CollegeSerializer(colleges, many=True)
+            return Response(serializer.data)
+
+        return Response({"message": "No results found"})
    
     @action(detail=False, methods=['get'], url_path='slug/(?P<slug>[^/.]+)')
     def get_by_slug(self, request, slug=None):
@@ -316,6 +373,7 @@ class CollegeViewSet(viewsets.ModelViewSet):
         if College.objects.filter(name=college_name).exists():
             return Response({"detail": "College name already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "College name is available."}, status=status.HTTP_200_OK)
+
 
 
 

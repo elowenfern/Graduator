@@ -39,7 +39,7 @@ const AllUniversity = () => {
       description: university.description || "",
       established_year: university.established_year || "",
       website: university.website || "",
-      image: null, // Set to null initially
+      // image: null, // Set to null initially
     });
     setIsModalOpen(true);
   };
@@ -124,7 +124,7 @@ const AllUniversity = () => {
             <th className="py-2 px-4 border-b border-r">Location</th>
             <th className="py-2 px-4 border-b border-r">Established Year</th>
             <th className="py-2 px-4 border-b border-r">Website</th>
-            <th className="py-2 px-4 border-b border-r">Image</th>
+            {/* <th className="py-2 px-4 border-b border-r">Image</th> */}
             <th className="py-2 px-4 border-b border-r">Actions</th>
           </tr>
         </thead>
@@ -148,10 +148,10 @@ const AllUniversity = () => {
                   "N/A"
                 )}
               </td>
-              <td className="py-2 px-4 border-b border-r">
+              {/* <td className="py-2 px-4 border-b border-r">
                 {university.image ? (
                     <div>
-                    {console.log('Image URL:', university.image)} {/* Log the image URL */}
+                    {console.log('Image URL:', university.image)} 
                     <img
                         src={university.image}
                         alt={university.name}
@@ -161,7 +161,8 @@ const AllUniversity = () => {
                 ) : (
                     "No Image"
                 )}
-                </td>
+                </td> */}
+                
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => handleEditClick(university)}
@@ -229,7 +230,7 @@ const AllUniversity = () => {
                 placeholder="Website"
                 className="block w-full p-2 border border-gray-300 rounded-md mb-2"
               />
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">Current Image:</label>
                 {editUniversity.image ? (
                   <>
@@ -249,7 +250,9 @@ const AllUniversity = () => {
                   onChange={handleFormChange}
                   className="block w-full p-2 border border-gray-300 rounded-md"
                 />
-              </div>
+              </div> */}
+
+              
               <div className="flex justify-end">
                 <button
                   type="button"

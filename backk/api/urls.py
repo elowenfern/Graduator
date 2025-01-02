@@ -24,7 +24,6 @@ from .views import (
     BlogViewSet,
     increment_course_view,
     InquiryViewSet
-
 )
 
 
@@ -43,7 +42,7 @@ popular_courses_viewset = PopularCoursesViewSet.as_view({"get": "list"})
 
 urlpatterns = [
     path('', include(router.urls)),
-
+    # path('search/',search_colleges,name='search_colleges'),
     path('send-whatsapp/', send_whatsapp, name='send_whatsapp'), 
    
     path('college/', CollegeListView.as_view(), name='college-list'),

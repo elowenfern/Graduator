@@ -13,7 +13,7 @@ const UniversityDetail = ({ university }) => {
       <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold text-gray-800">{name}</h1>
 
       {/* University Image */}
-      {image ? (
+      {/* {image ? (
         <img
           src={image} // Ensure the image URL is correctly formed
           alt={name}
@@ -23,7 +23,7 @@ const UniversityDetail = ({ university }) => {
         <div className="w-full h-64 bg-gray-300 flex justify-center items-center text-white rounded-lg mb-6">
           No Image Available
         </div>
-      )}
+      )} */}
 
       {/* University Description */}
       <p className="mt-4 text-base sm:text-sm md:text-lg text-gray-600 break-words">{description}</p>
@@ -49,9 +49,9 @@ const UniversityDetail = ({ university }) => {
       )}
 
       {/* University Location */}
-      <div className="mt-4 text-base sm:text-sm md:text-lg text-gray-600">
+      {/* <div className="mt-4 text-base sm:text-sm md:text-lg text-gray-600">
         <strong>Location:</strong> {location || "Location not provided"}
-      </div>
+      </div> */}
     </div>
   );
 };

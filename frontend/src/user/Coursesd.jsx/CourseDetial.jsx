@@ -11,19 +11,19 @@ const CourseDetail = () => {
   const { courseName } = useParams();
   const [course, setCourse] = useState(null);
   const [colleges, setColleges] = useState([]);
+  const [scrollIndex, setScrollIndex] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleCollegeClick = (collegeName) => {
     const slug = Slug(collegeName);
-    navigate(`/colleges/${slug}`); // Navigate to the college's page
+    navigate(`/colleges/${slug}`);
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (courseName) {
       const decodedCourseName = decodeURIComponent(courseName);
-
       fetch(`${config.API_URL}/api/courses?name=${decodedCourseName}`)
         .then((response) => {
           if (!response.ok) {
@@ -56,6 +56,7 @@ const CourseDetail = () => {
         return response.json();
       })
       .then((data) => {
+        console.log("Colleges data:", data);  
         setColleges(data);
       })
       .catch((error) => {
@@ -64,17 +65,22 @@ const CourseDetail = () => {
       });
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScrollIndex((prevIndex) => (prevIndex + 1) % colleges.length);
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [colleges.length]);
+
   return (
     <div className="relative min-h-screen bg-gray-100 text-black">
       {error && <div className="text-red-400 text-center mb-4">{error}</div>}
 
-      {/* Background Image Section */}
       {course && (
         <div
           className="relative bg-cover bg-center bg-no-repeat h-[60vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]"
-          style={{
-            backgroundImage: `url(${course.image})`,
-          }}
+          style={{ backgroundImage: `url(${course.image})` }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
           <div className="absolute bottom-4 left-4 text-white font-bold text-4xl sm:text-2xl md:text-3xl lg:text-4xl z-10">
@@ -83,25 +89,27 @@ const CourseDetail = () => {
         </div>
       )}
 
-      {/* Content Section */}
       <div className="flex flex-col md:flex-row mt-4 w-full">
-        {/* Left Section */}
         <div className="flex-1 bg-white p-6 shadow-md rounded-lg md:mr-4 lg:w-2/3">
           <p className="text-lg md:text-xl leading-relaxed text-black">
             {course?.description || "No description available."}
           </p>
+
           <div className="mt-8">
             {colleges.length > 0 ? (
               <div className="overflow-hidden bg-gray-100 py-4">
-                <div className="flex animate-college-scroll space-x-4 overflow-x-auto">
-                  {colleges.map((college, index) => (
+                <div
+                  className="flex space-x-4 transition-transform duration-700"
+                  style={{ transform: `translateX(-${scrollIndex * 220}px)` }}
+                >
+                  {colleges.concat(colleges).map((college, index) => (
                     <div
                       key={`${college.id}-${index}`}
                       className="min-w-[200px] h-64 bg-white text-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col items-center cursor-pointer transform hover:scale-105 transition-all duration-300"
-                      onClick={() => handleCollegeClick(college.name)} // Trigger navigate on click
+                      onClick={() => handleCollegeClick(college.name)}
                     >
                       <img
-                        src={college.images[0]?.image}
+                         src={`${config.API_URL}${college.images[0]?.image}`}
                         alt={college.name}
                         className="w-full h-3/4 object-cover rounded-t-lg"
                       />
@@ -116,17 +124,10 @@ const CourseDetail = () => {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="w-full md:w-[300px] bg-white shadow-md rounded-lg mt-6 md:mt-0">
-          <div>
-            <BookAdmissionForm />
-          </div>
-          <div>
-            <PopularCoursesSection />
-          </div>
-          <div>
-            <TopColleges />
-          </div>
+          <BookAdmissionForm />
+          <PopularCoursesSection />
+          <TopColleges />
         </div>
       </div>
     </div>
