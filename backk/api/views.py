@@ -573,7 +573,6 @@ class PopularCoursesViewSet(viewsets.ViewSet):
 #filter
 
 def unique_locations(request):
-    # Fetch unique locations from the College model
     locations = College.objects.values_list('location', flat=True).distinct()
     return JsonResponse({'locations': list(locations)})
 
@@ -582,17 +581,12 @@ def colleges_by_location(request, location):
     colleges = College.objects.filter(location=location)  # Use filter instead of get_list_or_404
     if not colleges:
         return JsonResponse({'colleges': []})
-    
     data = []
-
     for college in colleges:
-        # Check if the college has related images
         image_url = None
         college_images = CollegeImage.objects.filter(college=college)
         if college_images.exists():
-            # Get the first image related to the college (or modify as needed)
             image_url = college_images.first().image.url
-
         data.append({
             'id': college.id,
             'name': college.name,
@@ -602,14 +596,11 @@ def colleges_by_location(request, location):
     
     return JsonResponse({'colleges': data})
 
+
 def colleges_by_section(request, section_name):
-    # Fetch all sections matching the name
     sections = Section.objects.filter(name__iexact=section_name)
-    
-    # If no sections are found
     if not sections.exists():
         return JsonResponse({'error': 'No sections found'}, status=404)
-
     colleges = []
     for section in sections:
         college = section.college
@@ -621,7 +612,6 @@ def colleges_by_section(request, section_name):
             'slug':college.slug,
             'image': college_image.image.url if college_image else None
         })
-    
     return JsonResponse({'colleges': colleges})
  
 
@@ -647,13 +637,13 @@ def course_by_category(request):
             "years": course.years,
             "colleges": [college_college.college.name for college_college in course.college_courses.all()],
             "category": course.category,
-            "image": course.image.url if course.image else None,
-            
+            "image": course.image.url if course.image else None, 
         }
         for course in courses
     ]
-
     return JsonResponse(data, safe=False)
+
+
 
 
 class BlogViewSet(viewsets.ModelViewSet):
@@ -661,14 +651,23 @@ class BlogViewSet(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
 
     def create(self, request, *args, **kwargs):
-        print("Incoming request data:", request.data)
-        response = super().create(request, *args, **kwargs)
-        print("Response data:", response.data)
-        return response
+        print("Incoming data:", request.data)
+        try:
+            response = super().create(request, *args, **kwargs)
+            print("Blog created successfully:", response.data)
+            return response
+        except Exception as e:
+            print("Error creating blog:", e)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     def destroy(self, request, *args, **kwargs):
         blog = self.get_object()
-        blog.delete()  # Delete the blog instance
+        blog.delete() 
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+
 # views increment
 @api_view(['POST'])
 def increment_course_view(request, pk):

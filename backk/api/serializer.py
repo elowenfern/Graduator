@@ -119,17 +119,40 @@ class SectionSerializer(serializers.ModelSerializer):
         if self.context['request'].method == 'POST':
             representation.pop('course', None)
         return representation
+    
+    
 
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = University
         fields =  '__all__'
 
+
+
+    # colleges = serializers.ListField(
+    #     child=serializers.PrimaryKeyRelatedField(queryset=College.objects.all())
+    # )
+
 class BlogSerializer(serializers.ModelSerializer):
-    colleges = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), many=True)
+    colleges = serializers.PrimaryKeyRelatedField(
+        queryset=College.objects.all(), 
+        many=True
+    )
     class Meta:
         model = Blog
-        fields =  '__all__'
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        colleges = validated_data.pop('colleges', [])
+        blog = Blog.objects.create(**validated_data)
+        blog.colleges.set(colleges) 
+        return blog
+
+
+
+
+ 
+
 
 class InquirySerializer(serializers.ModelSerializer):
     class Meta:

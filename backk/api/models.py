@@ -7,8 +7,8 @@ from django.utils.text import slugify
 
 
 class University(models.Model):
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    location = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     established_year = models.IntegerField(blank=True, null=True)
     website = models.URLField(max_length=200, blank=True, null=True)
