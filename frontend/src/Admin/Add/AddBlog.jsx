@@ -53,16 +53,18 @@ const AddBlog = () => {
       alert("Please select at least one college.");
       return;
     }
+    
     console.log("Selected Colleges:", selectedColleges);
+  
     // Ensure only IDs are sent
     const blogData = {
       title,
       description,
-      colleges: selectedColleges,
+      colleges: selectedColleges.map(collegeId => ({ id: collegeId })) 
     };
   
-    console.log("Selected Colleges before sending:", blogData.colleges); // Log for debugging
-  
+    console.log("Selected Colleges before sending:", blogData); // Move this outside fetch
+    
     fetch(`${config.API_URL}/api/blogs/`, {
       method: "POST",
       headers: {

@@ -123,14 +123,16 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = [
     'https://graduatorsacademy.com',
-    "http://127.0.0.1:8000",
-    "http://localhost:3000",
+    'https://api.graduatorsacademy.com',
+    # "http://127.0.0.1:8000",
+    # "http://localhost:3000",
 ]
 
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'api.graduatorsacademy.com',
+    'graduatorsacademy.com',
     ]
 
 
