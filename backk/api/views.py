@@ -651,7 +651,8 @@ class BlogViewSet(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
 
     def create(self, request, *args, **kwargs):
-        print("Incoming data:", request.data)
+        print("Raw incoming data:", request.body) 
+        print("Parsed request data:", request.data)
         try:
             response = super().create(request, *args, **kwargs)
             print("Blog created successfully:", response.data)

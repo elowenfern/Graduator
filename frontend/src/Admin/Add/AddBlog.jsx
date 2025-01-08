@@ -63,7 +63,7 @@ const AddBlog = () => {
       colleges: Array.isArray(selectedColleges) ? selectedColleges : [selectedColleges],
     };
   
-    console.log("Selected Colleges before sending:", blogData); // Move this outside fetch
+    console.log("Blog Data Sent:", JSON.stringify(blogData)); 
     
     fetch(`${config.API_URL}/api/blogs/`, {
       method: "POST",
