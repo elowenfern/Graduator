@@ -141,6 +141,11 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = '__all__'
+        
+    def to_internal_value(self, data):
+        if isinstance(data.get('colleges'), int):
+            data['colleges'] = [data['colleges']]
+        return super().to_internal_value(data)
     
     def create(self, validated_data):
         colleges = validated_data.pop('colleges', [])

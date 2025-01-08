@@ -60,7 +60,7 @@ const AddBlog = () => {
     const blogData = {
       title,
       description,
-      colleges: selectedColleges.map(collegeId => ({ id: collegeId })) 
+      colleges: Array.isArray(selectedColleges) ? selectedColleges : [selectedColleges],
     };
   
     console.log("Selected Colleges before sending:", blogData); // Move this outside fetch
